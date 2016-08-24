@@ -89,7 +89,7 @@
         $('#nextF').on("click",function() {
           var location = $("#dropdown").val(); 
           if(location == null){
-            alert("Select an option");
+            alert("Select a farm");
           }else if(location != "Farm"){ 
             window.location = "/phpork/farm/" +location;
           }

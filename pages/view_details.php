@@ -105,7 +105,7 @@
 			</div>
 			<br/>
 			<div class="col-md-2 col-centered icons-img1 panel2"  data-trigger= "hover" data-toggle="tooltip" title="Click to display medication panel. This is where you can view,edit,insert or print pig's medication." data-placement="left">
-			    <button id="medication" class="imgBtn"">
+			    <button id="medication" class="imgBtn">
 			        <img class="img-responsive"  src="<?php echo HOST;?>/phpork/images/Medications.png">
 			    </button>
 			</div>
@@ -951,7 +951,7 @@
                   $("#pigInfo").append($("<hr>").attr("style", "border-color: #9ecf95;"));
                    $("#pigInfo").append($("<label></label>").text("Week Farrowed:         "));
                     $("#pigInfo").append($("<input></input)").attr("type", "hidden").attr("id","prevWeekFar").attr("value",data[0].week_far));
-                    $("#pigInfo").append($("<input></input)").attr("type", "text").attr("id","editWeekFar").attr("value",data[0].week_far));
+                    $("#pigInfo").append($("<input></input)").attr("type", "text").attr("id","editWeekFar").attr("value",data[0].week_far).attr("pattern", "[A-Za-z]+[0-9]+"));
 	              $("#pigInfo").append($("<br/>"));
                   $("#pigInfo").append($("<label></label>").text("Status: "));
                   $("#pigInfo").append($("<input></input)").attr("type", "hidden").attr("id","prevStatus").attr("value", data[0].pig_stat));
@@ -1032,83 +1032,88 @@
            var pigLabel = $('#pigLabel').val();
            var weightrecord = $('#weightRecordId').val();
 
-           $.ajax({
-	        url: '/phpork/gateway/pig.php',
-	        type: 'post',
-	        data : {
-	          updatePig: '1',
-	          pig: pig_id,
-	          user: user_id,
-	          stat: newStatus,
-	          prevStatus: prevStatus,
-	        },
-	        success: function (data) { 
-	          
-	           console.log("pig status updated");
+           if(newWeekFar == "" || newWeightType == "" || newWeight == ""){
+           	alert("Please fill up all fields");
+           }else{
 
-	            $.ajax({
-			        url: '/phpork/gateway/pig.php',
-			        type: 'post',
-			        data : {
-			          updateRFID: '1',
-			          pig: pig_id,
-					  rfid: newRFID,
-		              prevRFID: prevRFID,
-					  label: pigLabel,
-					  user: user_id
-			        },
-			        success: function (data) { 
-			           
-			           console.log("pig rfid updated");
+	           $.ajax({
+		        url: '/phpork/gateway/pig.php',
+		        type: 'post',
+		        data : {
+		          updatePig: '1',
+		          pig: pig_id,
+		          user: user_id,
+		          stat: newStatus,
+		          prevStatus: prevStatus,
+		        },
+		        success: function (data) { 
+		          
+		           console.log("pig status updated");
+
+		            $.ajax({
+				        url: '/phpork/gateway/pig.php',
+				        type: 'post',
+				        data : {
+				          updateRFID: '1',
+				          pig: pig_id,
+						  rfid: newRFID,
+			              prevRFID: prevRFID,
+						  label: pigLabel,
+						  user: user_id
+				        },
+				        success: function (data) { 
+				           
+				           console.log("pig rfid updated");
 
 
-			            $.ajax({
-					        url: '/phpork/gateway/pig.php',
-					        type: 'post',
-					        data : {
-					          updatePigWeight: '1',
-					          pig: pig_id,
-							  weight: newWeight,
-				              record_id: weightrecord,
-							  remarks: newWeightType,
-							  prevWeight: prevWeight,
-							  prevWeightType: prevWeightType,
-							  user: user_id
-					        },
-					        success: function (data) { 
-					           
-					           console.log("pig weight updated");
+				            $.ajax({
+						        url: '/phpork/gateway/pig.php',
+						        type: 'post',
+						        data : {
+						          updatePigWeight: '1',
+						          pig: pig_id,
+								  weight: newWeight,
+					              record_id: weightrecord,
+								  remarks: newWeightType,
+								  prevWeight: prevWeight,
+								  prevWeightType: prevWeightType,
+								  user: user_id
+						        },
+						        success: function (data) { 
+						           
+						           console.log("pig weight updated");
 
-					            $.ajax({
-							        url: '/phpork/gateway/pig.php',
-							        type: 'post',
-							        data : {
-							          updateWeekFar: '1',
-							          user: user_id,
-							          pig: pig_id,
-							          prevWeekFar: prevWeekFar,
-							          week_far: newWeekFar
-							        },
-							        success: function (data) { 
-							          
-							           console.log("edit history");
-							           location.reload();
+						            $.ajax({
+								        url: '/phpork/gateway/pig.php',
+								        type: 'post',
+								        data : {
+								          updateWeekFar: '1',
+								          user: user_id,
+								          pig: pig_id,
+								          prevWeekFar: prevWeekFar,
+								          week_far: newWeekFar
+								        },
+								        success: function (data) { 
+								          
+								           console.log("edit history");
+								           location.reload();
 
-							          
-					        }    
-					      });
-					          
-			        }    
-			      });
+								          
+						        }    
+						      });
+						          
+				        }    
+				      });
 
-			          
-	        }    
-	      });
+				          
+		        }    
+		      });
 
+			}
+
+
+	        });
 		}
-
-
-        });
       });
  		
  		$('#cancelEditPig').on("click",function() {
@@ -1345,17 +1350,54 @@
 
 		 	var choice = $('#selectMedchoice').val();
 
-		 	if(choice === "perpen"){
+		 	if( lastMed == "" || dateGiven == "" || timeGiven == "" || medQuantity == "" || qtyUnit == "" ){
+		 		alert("Please fill up all fields");
+		 	}else {
 
-		 		var checkedPen = document.getElementsByClassName('penclass');
-		 		var selPen = [];
+			 	if(choice === "perpen"){
 
-		 		for(var i=0;i<checkedPen.length; i++){
-		 			if(checkedPen[i].checked){
-		 				selPen.push($(checkedPen[i]).val());
-		 			}
-		 		}
-		 		
+			 		var checkedPen = document.getElementsByClassName('penclass');
+			 		var selPen = [];
+
+			 		for(var i=0;i<checkedPen.length; i++){
+			 			if(checkedPen[i].checked){
+			 				selPen.push($(checkedPen[i]).val());
+			 			}
+			 		}
+			 		
+				 	 $.ajax({
+		                    url: '/phpork/gateway/meds.php',
+		                    type: 'post',
+		                    data : {
+		                     subMed: '1',
+		                     selectMeds: lastMed,
+							 medDate: dateGiven,
+				             medTime: timeGiven, 
+			                 medQty: medQuantity,
+				             selUnit: qtyUnit,
+				             pensel: selPen,
+				             user: user
+		                    },
+		                    success: function (data) { 
+		                       alert("Added!");
+		                       location.reload();
+		                       $('#medication').click();
+		                     }
+		                  });
+
+
+			 	}else if(choice === "perpig"){
+			 		var checkedPig = document.getElementsByClassName('pigclass');
+			 		var selPig = [];
+
+			 		for(var i=0;i<checkedPig.length; i++){
+			 			if(checkedPig[i].checked){
+			 				console.log($(checkedPig[i]).val());
+			 				selPig.push($(checkedPig[i]).val());
+			 			}
+			 		}
+
+
 			 	 $.ajax({
 	                    url: '/phpork/gateway/meds.php',
 	                    type: 'post',
@@ -1366,52 +1408,20 @@
 			             medTime: timeGiven, 
 		                 medQty: medQuantity,
 			             selUnit: qtyUnit,
-			             pensel: selPen,
+			             pigpen: selPig,
 			             user: user
 	                    },
 	                    success: function (data) { 
-	                       alert("Added!");
-	                       location.reload();
-	                       $('#medication').click();
+	                      alert("Added!");
+		                       location.reload();
+		                       $('#medication').click("true");
+	                          
 	                     }
 	                  });
 
 
-		 	}else if(choice === "perpig"){
-		 		var checkedPig = document.getElementsByClassName('pigclass');
-		 		var selPig = [];
-
-		 		for(var i=0;i<checkedPig.length; i++){
-		 			if(checkedPig[i].checked){
-		 				console.log($(checkedPig[i]).val());
-		 				selPig.push($(checkedPig[i]).val());
-		 			}
-		 		}
-
-
-		 	 $.ajax({
-                    url: '/phpork/gateway/meds.php',
-                    type: 'post',
-                    data : {
-                     subMed: '1',
-                     selectMeds: lastMed,
-					 medDate: dateGiven,
-		             medTime: timeGiven, 
-	                 medQty: medQuantity,
-		             selUnit: qtyUnit,
-		             pigpen: selPig,
-		             user: user
-                    },
-                    success: function (data) { 
-                      alert("Added!");
-	                       location.reload();
-	                       $('#medication').click("true");
-                          
-                     }
-                  });
-
-
-		 	}
+			 	}
+			 }
 
 
 		 });
@@ -1604,75 +1614,79 @@
 		 	
 		 	var choice = $('#selectFeedchoice').val();
 
-		 	if(choice === "perpenF"){
+		 	if(lastFeed == "" || feedProdDate == "" || dateFeedGiven == "" || timeFeedGiven == "" || feedQuantity == ""){
+		 		alert("Please fill up all fields");
+		 	}else{
 
-		 		var checkedPenF = document.getElementsByClassName('penclassF');
-		 		var selPen = [];
+			 	if(choice === "perpenF"){
 
-		 		for(var i=0;i<checkedPenF.length; i++){
-		 			if(checkedPenF[i].checked){
-		 				selPen.push($(checkedPenF[i]).val());
-		 			}
-		 		}
-		 		
+			 		var checkedPenF = document.getElementsByClassName('penclassF');
+			 		var selPen = [];
+
+			 		for(var i=0;i<checkedPenF.length; i++){
+			 			if(checkedPenF[i].checked){
+			 				selPen.push($(checkedPenF[i]).val());
+			 			}
+			 		}
+			 		
+				 	 $.ajax({
+		                    url: '/phpork/gateway/feeds.php',
+		                    type: 'post',
+		                    data : {
+		                    addFeeds: '1',
+		                    selectFeeds: lastFeed,
+							fdate: dateFeedGiven, 
+							ftime: timeFeedGiven, 
+							feedtypeDate: feedProdDate, 
+							feedQty: feedQuantity,
+							pensel: selPen,
+							user: user
+		                    },
+		                    success: function (data) { 
+		                       
+		                       alert("Added!");
+		                        location.reload();
+
+		                     }
+		                  });
+
+
+			 	}else if(choice === "perpigF"){
+			 		var checkedPigF = document.getElementsByClassName('pigclassF');
+			 		var selPig = [];
+
+			 		for(var i=0;i<checkedPigF.length; i++){
+			 			if(checkedPigF[i].checked){
+			 				console.log($(checkedPigF[i]).val());
+			 				selPig.push($(checkedPigF[i]).val());
+			 			}
+			 		}
+
+
 			 	 $.ajax({
 	                    url: '/phpork/gateway/feeds.php',
 	                    type: 'post',
 	                    data : {
-	                    addFeeds: '1',
-	                    selectFeeds: lastFeed,
-						fdate: dateFeedGiven, 
-						ftime: timeFeedGiven, 
-						feedtypeDate: feedProdDate, 
-						feedQty: feedQuantity,
-						pensel: selPen,
-						user: user
+	                      addFeeds: '1',
+		                  selectFeeds: lastFeed,
+						  fdate: dateFeedGiven, 
+						  ftime: timeFeedGiven,
+						  feedtypeDate: feedProdDate, 
+						  feedQty: feedQuantity,
+						  pigpen: selPig,
+						  user: user
 	                    },
 	                    success: function (data) { 
-	                       
-	                       alert("Added!");
-	                        location.reload();
+	                      alert("Added!"); 
+	                       location.reload();
 
+	                          
 	                     }
 	                  });
 
 
-		 	}else if(choice === "perpigF"){
-		 		var checkedPigF = document.getElementsByClassName('pigclassF');
-		 		var selPig = [];
-
-		 		for(var i=0;i<checkedPigF.length; i++){
-		 			if(checkedPigF[i].checked){
-		 				console.log($(checkedPigF[i]).val());
-		 				selPig.push($(checkedPigF[i]).val());
-		 			}
-		 		}
-
-
-		 	 $.ajax({
-                    url: '/phpork/gateway/feeds.php',
-                    type: 'post',
-                    data : {
-                      addFeeds: '1',
-	                  selectFeeds: lastFeed,
-					  fdate: dateFeedGiven, 
-					  ftime: timeFeedGiven,
-					  feedtypeDate: feedProdDate, 
-					  feedQty: feedQuantity,
-					  pigpen: selPig,
-					  user: user
-                    },
-                    success: function (data) { 
-                      alert("Added!"); 
-                       location.reload();
-
-                          
-                     }
-                  });
-
-
-		 	}
-
+			 	}
+			 }
 
 		 });
 	
@@ -1726,73 +1740,77 @@
 		 	var choice = $('#selectWeightchoice').val();
 		 	var user = $('#userId').val();
 
-		 	if(choice == "perbatch"){
+		 	if(weight == "" || weightType == "" || dateWeighed == "" || timeWeighed == ""){
+		 		alert("Please fill up all fields");
+		 	}else{
 
-		 		var checkedBatch = document.getElementsByClassName('batchclass');
-		 		var selBatch = [];
+			 	if(choice == "perbatch"){
 
-		 		for(var i=0;i<checkedBatch.length; i++){
-		 			if(checkedBatch[i].checked){
-		 				console.log($(checkedBatch[i]).val());
-		 				selBatch.push($(checkedBatch[i]).val());
-		 			}
-		 		}
-		 		
+			 		var checkedBatch = document.getElementsByClassName('batchclass');
+			 		var selBatch = [];
+
+			 		for(var i=0;i<checkedBatch.length; i++){
+			 			if(checkedBatch[i].checked){
+			 				console.log($(checkedBatch[i]).val());
+			 				selBatch.push($(checkedBatch[i]).val());
+			 			}
+			 		}
+			 		
+				 	 $.ajax({
+		                    url: '/phpork/gateway/pig.php',
+		                    type: 'post',
+		                    data : {
+		                     insertWeight: '1',
+		                     weight: weight,
+							 weightType: weightType,
+				             dateWeighed: dateWeighed, 
+			                 timeWeighed: timeWeighed,
+				             user: user,
+				             batchsel: selBatch
+		                    },
+		                    success: function (data) { 
+		                       alert("Added q!");
+		                        location.reload();
+
+		                       
+		                     }
+		                  });
+
+
+			 	}else if(choice == "perpigW"){
+			 		var checkedPig = document.getElementsByClassName('pigclassW');
+			 		var selPig = [];
+
+			 		for(var i=0;i<checkedPig.length; i++){
+			 			if(checkedPig[i].checked){
+			 				console.log($(checkedPig[i]).val());
+			 				selPig.push($(checkedPig[i]).val());
+			 			}
+			 		}
+
+
 			 	 $.ajax({
-	                    url: '/phpork/gateway/pig.php',
-	                    type: 'post',
-	                    data : {
-	                     insertWeight: '1',
-	                     weight: weight,
-						 weightType: weightType,
-			             dateWeighed: dateWeighed, 
-		                 timeWeighed: timeWeighed,
-			             user: user,
-			             batchsel: selBatch
-	                    },
-	                    success: function (data) { 
-	                       alert("Added q!");
-	                        location.reload();
+		                    url: '/phpork/gateway/pig.php',
+		                    type: 'post',
+		                    data : {
+		                     insertWeight: '1',
+		                     weight: weight,
+							 weightType: weightType,
+				             dateWeighed: dateWeighed, 
+			                 timeWeighed: timeWeighed,
+				             user: user,
+				             pigsel: selPig
+		                    },
+		                    success: function (data) { 
+		                       alert("Added!");
+		                       location.reload($('#weight').click());
 
-	                       
-	                     }
-	                  });
+		                       
+		                     }
+		                  });
 
-
-		 	}else if(choice == "perpigW"){
-		 		var checkedPig = document.getElementsByClassName('pigclassW');
-		 		var selPig = [];
-
-		 		for(var i=0;i<checkedPig.length; i++){
-		 			if(checkedPig[i].checked){
-		 				console.log($(checkedPig[i]).val());
-		 				selPig.push($(checkedPig[i]).val());
-		 			}
-		 		}
-
-
-		 	 $.ajax({
-	                    url: '/phpork/gateway/pig.php',
-	                    type: 'post',
-	                    data : {
-	                     insertWeight: '1',
-	                     weight: weight,
-						 weightType: weightType,
-			             dateWeighed: dateWeighed, 
-		                 timeWeighed: timeWeighed,
-			             user: user,
-			             pigsel: selPig
-	                    },
-	                    success: function (data) { 
-	                       alert("Added!");
-	                       location.reload($('#weight').click());
-
-	                       
-	                     }
-	                  });
-
-		 	}
-
+			 	}
+			 }
 
 		 });
          /*view meds */

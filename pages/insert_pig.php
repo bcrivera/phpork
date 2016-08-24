@@ -310,7 +310,6 @@
     <?php 
       $u = $_SESSION['user_id']; 
       echo "<input type='hidden' value='$u' name='user' id='userId'/>";
-      // echo"<script>console.log(\"user_id:\" +$u);</script>"; 
     ?> 
   </div>  
 
@@ -396,16 +395,16 @@
                 },
                 success: function (data) { 
                    var data = jQuery.parseJSON(data); 
-                  // $("#house").append($("<option></option>").attr("disabled",true).attr("value","").text("Select house.."));
+                  /* $("#house").append($("<option></option>").attr("disabled",true).attr("value","").text("Select house.."));*/
                     
                       for(i=0;i<data.length;i++){
-                        // document.getElementById("house").innerHTML = '<option value="" disabled selected style="display:none;">Select house..</option>';
-                        // document.getElementById("house").innerHTML = '<option value='+data[i].h_id+' name="house">House '+data[i].h_no+'</option>';
+                        /* document.getElementById("house").innerHTML = '<option value="" disabled selected style="display:none;">Select */house..</option>';
+                        /* document.getElementById("house").innerHTML = '<option value='+data[i].h_id+' name="house">House '+data[i].h_no+'</*/option>';
                         $("#house").append($("<option></option>").attr("value",data[i].h_id)
                           .attr("name","house")
                           .text("House " +data[i].h_no)); 
                       }
-                     // $("<option>", { value: '', selected: true }).prependTo("#house");​​​​​​​​​​​
+                     /* $("<option>", { value: '', selected: true }).prependTo("#house");​​​​​​​​​​​*/
                 } 
               });
            });
@@ -503,7 +502,6 @@
 
                 var user = $('#userId').val();
 
-               // alert(pigId);
        
 
                  $.ajax({
@@ -551,7 +549,7 @@
       });
       </script>
       <script>
-      //Select Farm
+      /*Select Farm*/
         $.ajax({
           url: '/phpork/gateway/location.php',
           type: 'post',
@@ -570,7 +568,7 @@
           
         });
 
-        //Select Breed
+        /*Select Breed*/
 
        $.ajax({
           url: '/phpork/gateway/pig.php',
@@ -590,7 +588,7 @@
           
         });
 
-        //Last Feed
+        /*Last Feed*/
         $.ajax({
           url: '/phpork/gateway/feeds.php',
           type: 'post',
@@ -609,7 +607,7 @@
           
         });
 
-        //Last Medication Given
+        /*Last Medication Given*/
         $.ajax({
           url: '/phpork/gateway/meds.php',
           type: 'post',
@@ -628,7 +626,7 @@
           
         });
 
-        //select boar
+        /*select boar*/
         $.ajax({
           url: '/phpork/gateway/pig.php',
           type: 'post',
@@ -647,7 +645,7 @@
           
         });
 
-        //select sow
+        /*select sow*/
          $.ajax({
           url: '/phpork/gateway/pig.php',
           type: 'post',
@@ -666,7 +664,7 @@
           
         });
 
-         //foster sow
+         /*foster sow*/
           $.ajax({
           url: '/phpork/gateway/pig.php',
           type: 'post',

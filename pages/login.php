@@ -2,10 +2,10 @@
 <html lang = "en">
   <?php 
     session_start(); 
-    if(isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['user_type'])){
-      if($_SESSION['user_type'] == 1) header("Location: /phpork/admin/home");
-      else  header("Location: /phpork/encoder/home");
-    } 
+    // if(isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['user_type'])){
+    //   if($_SESSION['user_type'] == 1) header("Location: /phpork/admin/home");
+    //   else  header("Location: /phpork/encoder/home");
+    // } 
     require_once "../connect.php"; 
     require_once "../inc/dbinfo.inc"; 
 
@@ -13,8 +13,8 @@
       $res =  mysqli_query($con, "SELECT user_id,user_name,password,user_type FROM user WHERE user_name='" . $_POST["username"]."'; ") or die ( mysqli_error ( $con ) );
        $r = mysqli_fetch_row($res); 
        $pw = base64_decode($r[2]);
-      // $result = mysqli_query($con, "SELECT user_id,user_name,password,user_type FROM user WHERE user_name='" . $_POST["username"]."' and password = '". $_POST["password"]."'; ") or die ( mysqli_error ( $con ) ); 
-      // $row = mysqli_fetch_row($result); 
+      /* $result = mysqli_query($con, "SELECT user_id,user_name,password,user_type FROM user WHERE user_name='" . $_POST["username"]."' and password = '". $_POST["password"]."'; ") or die ( mysqli_error ( $con ) ); */
+      /* $row = mysqli_fetch_row($result); */
       if($r != null && $pw == $_POST['password']){
         $_SESSION["user_id"] = $r[0]; 
         $_SESSION["username"] = $r[1]; 
@@ -22,7 +22,8 @@
         $_SESSION["user_type"] = $r[3];
 
         if($_SESSION['user_type'] == 1) header("Location: /phpork/admin/home");
-        else  header("Location: /phpork/encoder/home");
+        elseif($_SESSION['user_type'] == 2)  header("Location: /phpork/encoder/home");
+        else echo "<script> alert('This user is not valid anymore.'); </script>"; 
 
       }else{
         echo "<script> alert('Invalid username/password!'); </script>"; 

@@ -47,7 +47,7 @@
 				echo json_encode($db->addFeeds($fid,$fdate,$ftime,$pid,$proddate,$fqty,$user)); 					
 			} 
 		}
-//localhost/phpork2/gateway/feeds.php?addFeeds=1&selectFeeds=2&fdate=2016-03-05&ftime=08:00:00&feedtypeDate=2016-03-05&feedQty=0.20&selpig=1
+/*localhost/phpork2/gateway/feeds.php?addFeeds=1&selectFeeds=2&fdate=2016-03-05&ftime=08:00:00&feedtypeDate=2016-03-05&feedQty=0.20&selpig=1*/
 	
 	}
 	if(isset($_POST['addFeedName'])){
@@ -55,40 +55,40 @@
 		$ftype = $_POST['ftype'];
 		$user = $_POST['user'];
 		echo json_encode($db->addFeedName($fname,$ftype,$user)); 
-		//localhost/phpork/gateway/feeds.php?addFeedName=1&fname=feed&ftype=feedtype
+		/*localhost/phpork/gateway/feeds.php?addFeedName=1&fname=feed&ftype=feedtype*/
 	} 
 	if(isset($_POST['getFeedsDetails'])){
 		$feed = $_POST['feed']; 
 		echo json_encode($db->getFeedsDetails($feed)); 
-		//localhost/phpork/gateway/feeds.php?getFeedsDetails=1&feed=1
+		/*localhost/phpork/gateway/feeds.php?getFeedsDetails=1&feed=1*/
 	} 
 	if(isset($_GET['getFeedTransDetails'])){
 		$feed = $_GET['feed']; 
 		echo json_encode($db->getFeedTransDetails($feed)); 
-		//localhost/phpork/gateway/feeds.php?getFeedTransDetails=1&feed=1
+		/*localhost/phpork/gateway/feeds.php?getFeedTransDetails=1&feed=1*/
 	} 
 	if(isset($_POST['getFeedReport'])){
 		$pig = $_POST['pig']; 
 		$from = $_POST['from'];
 		$to = $_POST['to'];
 		echo json_encode($db->getFeedReport($pig,$from,$to)); 
-		//localhost/phpork2/gateway/meds.php?getMedsDetails=1&med=1
+		/*localhost/phpork2/gateway/meds.php?getMedsDetails=1&med=1*/
 	} 
 	if(isset($_POST['ddl_feeds'])){
 		$arr_feed = $db->ddl_feeds(); 
 		echo json_encode($arr_feed);
-		//localhost/phpork/gateway/feeds.php?ddl_feeds=1
+		/*localhost/phpork/gateway/feeds.php?ddl_feeds=1*/
 						
 	}
 	if(isset($_POST['ddl_feedRecordEdit'])){
 		$pid = $_POST['pig']; 
 		echo json_encode($db->ddl_feedRecordEdit($pid)); 
-		//localhost/phpork/gateway/feeds.php?ddl_feedRecordEdit=1&pig=1
+		/*localhost/phpork/gateway/feeds.php?ddl_feedRecordEdit=1&pig=1*/
 	} 
 	if(isset($_POST['ddl_feedRecord'])){
 		$pid = $_POST['pig']; 
 		echo json_encode($db->ddl_feedRecord($pid)); 
-		//localhost/phpork/gateway/feeds.php?ddl_feedRecord=1&pig=1
+		/*localhost/phpork/gateway/feeds.php?ddl_feedRecord=1&pig=1*/
 	}
 	if(isset($_POST['getLastFeed'])){
 		$pid = $_POST['pig']; 
@@ -100,6 +100,6 @@
 		$ft_id = $_POST['ft_id']; 
 		$user = $_POST['user']; 
 		echo json_encode($db->updateFeeds($fid,$ft_id,$user)); 
-		//localhost/phpork2/gateway/meds.php?ddl_medRecord=1&pig=1
+		/*localhost/phpork2/gateway/meds.php?ddl_medRecord=1&pig=1*/
 	} 
 ?>

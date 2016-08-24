@@ -91,6 +91,7 @@
 				
 				$query = "INSERT INTO user_transaction(user_id,id_edited,type_edited,prev_value,curr_value,pig_id,flag) 
 							values('" . $user . "','" . $edit_id . "','" . $edit_type . "','" . $prev_val . "','" . $curr_val . "','". $pig . "','". $flag . "');";
+				print $query;
 				$result = mysqli_query($link, $query);
 				
 			    
@@ -139,18 +140,19 @@
 	  	public function addLocationName($lname,$addr,$user)
 		{
 				$link = $this->connect();
+				
+				$query = "INSERT INTO location(loc_name,address) 
+						VALUES('" . $lname . "','" . $addr . "');";
 				$q = "SELECT max(loc_id)
 					FROM location";
 				$r = mysqli_query($link, $q);
 				$ro = mysqli_fetch_row($r);
 				$max = $ro[0] + 1;
-				$query = "INSERT INTO location(loc_id,loc_name,address) 
-						VALUES('" . $max . "','" . $lname . "','" . $addr . "');";
 				if ($result = mysqli_query( $link, $query )) {
-		      	$data = array("success"=>"true",
-		                    "newId"=> $link->insert_id);
-		      	$this->userTransactionEdit($user,$max,"location",0,$lname,1,0);
-			    }else {
+			      	$data = array("success"=>"true",
+			                    "newId"=>$link->insert_id);
+		      		$this->userTransactionEdit($user,$max,"location",0,$lname,1,0);
+			    }else{
 			      $data = array("success"=>"false",
 			                      "error"=>mysqli_error($link));
 			    }
@@ -363,7 +365,7 @@
 							set house_name = '" .$housename. "',
 								house_no = '" .$houseno. "',
 								loc_id = '" .$location. "',
-								function = '" .$fxn. "',
+								function = '" .$fxn. "'
 						WHERE house_id = '" . $houseid. "'";
 				$result = mysqli_query($link, $query);
 		}

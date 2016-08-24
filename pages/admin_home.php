@@ -146,6 +146,7 @@
                       <option value="" disabled selected>Select user type</option>
                       <option value="admin">Admin</option> 
                       <option value="encoder">Encoder</option> 
+
                 </select>
               </div>
               <br/>
@@ -177,23 +178,24 @@
                 <hr/>
                 <div class="input-group" id="editUNAME">
                   <span class="input-group-addon" id="basic-addon3">Username: </span>
-                  <input type="text" class="form-control" id="unameEdit" data-trigger= "hover" data-toggle="tooltip" title="Edit username" aria-describedby="basic-addon3" required>
+                  <input type="text" class="form-control" id="unameEdit" data-trigger= "hover" data-toggle="tooltip" title="Edit username" aria-describedby="basic-addon3" >
                 </div>
                 <br/>
                 <div class="input-group" id="editUTYPE">
                   <span class="input-group-addon" id="basic-addon3">User Type: </span>
-                  <select class="form-control" id="uTypeEdit" style="color:black;" data-trigger= "hover" data-toggle="tooltip" title="Edit if the user is an admin or encoder." required> 
+                  <select class="form-control" id="uTypeEdit" style="color:black;" data-trigger= "hover" data-toggle="tooltip" title="Edit if the user is an admin or encoder." > 
                         <option value="" disabled selected>Select user type</option>
                         <option value="admin">Admin</option> 
                         <option value="encoder">Encoder</option> 
+                        <option value="none">Remove this user</option> 
                   </select>
                 </div>
                 <br/>
                 <div class="input-group" id="editPWORD">
                   <span class="input-group-addon" id="basic-addon3">Previous Password: </span>
-                  <input type="password" class="form-control" id="passwordEditPrev" data-trigger= "hover" data-toggle="tooltip" title="Edit or change password." aria-describedby="basic-addon3" required>
+                  <input type="password" class="form-control" id="passwordEditPrev" data-trigger= "hover" data-toggle="tooltip" title="Edit or change password." aria-describedby="basic-addon3">
                   <span class="input-group-addon" id="basic-addon3">Password: </span>
-                  <input type="password" class="form-control" id="passwordEdit" data-trigger= "hover" data-toggle="tooltip" title="Edit or change password." aria-describedby="basic-addon3" required>
+                  <input type="password" class="form-control" id="passwordEdit" data-trigger= "hover" data-toggle="tooltip" title="Edit or change password." aria-describedby="basic-addon3">
                 </div>
                 <div class="modal-footer" >
                   <button type="submit" class="btn btn-default" data-dismiss="modal" data-trigger= "hover" data-toggle="tooltip" title="Click to edit user's details." id="saveEditUser">Edit</button>
@@ -412,14 +414,14 @@
               </div>
               <div class="input-group">
                 <span class="input-group-addon" id="basic-addon3">Location: </span>
-                <select class="form-control" id="f_addpen" style="color:black;" data-trigger= "hover" data-toggle="tooltip" title="Select the location/farm of the new pen. Ex: Farm 1" required> 
+                <select class="form-control" id="f_addpen" style="color:black;" data-trigger= "hover" data-toggle="tooltip" title="Select the location/farm of the new pen. Ex: Farm 1"> 
                   <option value="" disabled selected>Select farm location...</option> 
                 </select>
               </div>
               <br/>
               <div class="input-group">
                 <span class="input-group-addon" id="basic-addon3">House Number: </span>
-                <select class="form-control"  id="h_addpen" style="color:black;" data-trigger= "hover" data-toggle="tooltip" title="Select the house number where the pen will be added. Ex: House 2" required> 
+                <select class="form-control"  id="h_addpen" style="color:black;" data-trigger= "hover" data-toggle="tooltip" title="Select the house number where the pen will be added. Ex: House 2"> 
                   <option value="" disabled selected>Select house...</option> 
                 </select> 
               </div>
@@ -451,14 +453,14 @@
               </div>
               <div class="input-group">
                 <span class="input-group-addon" id="basic-addon3">Location: </span>
-                <select class="form-control" id="f_editpen" style="color:black;" data-trigger= "hover" data-toggle="tooltip" title="Select the location/farm of the new pen. Ex: Farm 1" required> 
+                <select class="form-control" id="f_editpen" style="color:black;" data-trigger= "hover" data-toggle="tooltip" title="Select the location/farm of the new pen. Ex: Farm 1" > 
                   <option value="" disabled selected>Select farm location...</option> 
                 </select>
               </div>
               <br/>
               <div class="input-group">
                 <span class="input-group-addon" id="basic-addon3">House Number: </span>
-                <select class="form-control"  id="h_editpen" style="color:black;" data-trigger= "hover" data-toggle="tooltip" title="Select the house number where the pen will be added. Ex: House 2" required> 
+                <select class="form-control"  id="h_editpen" style="color:black;" data-trigger= "hover" data-toggle="tooltip" title="Select the house number where the pen will be added. Ex: House 2" > 
                   <option value="" disabled selected>Select house...</option> 
                 </select> 
               </div>
@@ -466,8 +468,7 @@
               <div class="input-group">
                 <!-- <span class="input-group-addon" id="basic-addon3">Search: </span> -->
                 <select name="userName" id="searchPen" class="form-control"  data-placeholder="Search pen number..">
-                  <option selected></option>
-                  <option disabled style="font-weight:bold;color:black;">Select pen number...</option>
+                  
                 </select>
               </div>
             </div>
@@ -866,11 +867,11 @@
             var pword = $('#password').val();
             var user = $('#userId').val();
             
-          if((uName != '') && (password != '') ){
+          if((uName != '') && (pword != '') && user_Type!= null){
               var uType;
               if(user_Type === "admin"){
                 uType = 1;
-              }else{
+              }else if(user_Type === "encoder"){
                 uType = 2;
               }
              $.ajax({
@@ -884,14 +885,16 @@
                   user: user
                 },
                 success: function (data) {
-                    alert(user_Type);
+                    alert("User added.");
                     location.reload();
                 }    
               });
           }else{
             if(uName == ''){
               alert("Please input username.");
-            }else if(password == ''){
+            }else if(user_Type == null ){
+              alert("Please select user type.");              
+            }else if(pword == ''){
               alert("Please input password.");              
             }
           }
@@ -902,43 +905,55 @@
             var user = $('#userId').val();
              var edit_uid = $('#edit_uid').val();
             var prev_uname = $('#prev_uname').val();
-            var user_name = $('#unameEdit').val();
+            var user_name = "";
+            user_name = $('#unameEdit').val();
             var prev_utype = $('#prev_utype').val();
-            var user_Type = $('#uTypeEdit').val();
+            var user_Type = "";
+            user_Type = $('#uTypeEdit').val();
             var prev_pword = $('#prev_pword').val();
 
-            var password = $('#passwordEdit').val();
-            var pw_prev_input = $('#passwordEditPrev').val();
-            if((user_name != '') || (password != '') || (user_Type != '')){
+            var password = "";
+            password = $('#passwordEdit').val();
+            var pw_prev_input = "";
+            pw_prev_input = $('#passwordEditPrev').val();
               
               var uType;
               if(user_Type == "admin"){
                 uType = 1;
               }else if(user_Type=="encoder"){
                 uType = 2;
+              }else if(user_Type=="none"){
+                uType = 5;
               }
              $.ajax({
-                url: '/phpork/gateway/admin.php',
+                url: '/phpork/gateway/admin.php?editUser=1',
                 type: 'post',
                 data : {
-                  editUser: '1',
-                  user: user,
-                  prev_uname: prev_uname,
-                  username: user_name,
-                  prev_pword: prev_pword,
-                  password: password,
-                  prev_utype: prev_utype,
-                  usertype: uType,
-                  user_id: edit_uid,
-                  pw_prev_input: pw_prev_input
+                  'user': user,
+                  'prev_uname': prev_uname,
+                  'username': user_name,
+                  'prev_pword': prev_pword,
+                  'password': password,
+                  'prev_utype': prev_utype,
+                  'usertype': uType,
+                  'user_id': edit_uid,
+                  'pw_prev_input': pw_prev_input
                 },
                 success: function (data) {
-                     alert(edit_uid+user_name+"lala"+password);
-                   // window.location = "/phpork/admin/home"; 
-                   location.reload();
+                    if(data.indexOf("%%%failure%%%")!=-1){
+                      alert("Please select what to edit.");
+                    }else if(data.indexOf("error")!=-1){
+                      alert("Please input previous password!");
+                    }else if(data.indexOf("wrong")!=-1){
+                      alert("Password do not match!");
+                    }else{
+                     alert("Edited successfully!");
+                      location.reload();
+                    }
+                   
+                  
                 }    
               });
-            }
          
 
           });
@@ -1006,7 +1021,7 @@
               user: user
             },
             success: function (data) { 
-              var data = jQuery.parseJSON(data); 
+              //var data = jQuery.parseJSON(data); 
                 alert("Farm added");
                  location.reload();
               }
@@ -1031,25 +1046,30 @@
             var loc_id = $('#loc_id').val();
            
             
-              if((farmnameEdit != '') || (faddEdit != '') ){
-                 $.ajax({
-                    url: '/phpork/gateway/admin.php',
-                    type: 'post',
-                    data : {
-                      editLocationName: '1',
-                      user: user,
-                      prev_lname: prev_loc_name,
-                      lname: farmnameEdit,
-                      prev_addr: prev_addr,
-                      addr: faddEdit,
-                      loc_id: loc_id
-                    },
-                    success: function (data) {
-                        alert("Farm edited");
-                        location.reload();
-                    }    
-                  });
+             
+           $.ajax({
+              url: '/phpork/gateway/admin.php',
+              type: 'post',
+              data : {
+                editLocationName: '1',
+                user: user,
+                prev_lname: prev_loc_name,
+                lname: farmnameEdit,
+                prev_addr: prev_addr,
+                addr: faddEdit,
+                loc_id: loc_id
+              },
+              success: function (data) {
+                if(data.indexOf("empty")!= -1)
+                  alert("Please select what to edit.")
+                else{
+                   alert("Farm edited");
+                  location.reload();
                 }
+                 
+              }    
+            });
+                
          
 
           });
@@ -1107,12 +1127,12 @@
 
 
         $('#saveHouse').on("click",function(){
-          var location = $('#loc').val();
+          var loc = $('#loc').val();
           var hNum = $('#hnum').val();
           var hName = $('#hname').val();  
           var func = $('#func').val();
           var user = $('#userId').val();
-          if((hNum) && (hName) && (func) ){
+          if((hNum!="") && (hName!="") && (func!="") ){
             $.ajax({
               url: '/phpork/gateway/admin.php',
               type: 'post',
@@ -1121,14 +1141,14 @@
                 hno: hNum,
                 hname: hName,
                 fxn: func,
-                loc: location,
+                loc: loc,
                 user: user
               },
               success: function (data) { 
-                var data = jQuery.parseJSON(data); 
+                //var data = jQuery.parseJSON(data); 
                   alert("House added"); 
                    location.reload();
-                }
+              }
             });
           }else{
             if(!hNum ){
@@ -1155,32 +1175,35 @@
             var h_id = $('#prev_h_id').val();
            
            
-              if(edithnum === "" && edithname === ""){
-                alert(editLoc);
-                location.reload(); 
-              }else{
-                 $.ajax({
-                  url: '/phpork/gateway/admin.php',
-                  type: 'post',
-                  data : {
-                    editHouseName: '1',
-                    user: user,
-                    prev_hno: prev_h_no,
-                    hno: edithnum, 
-                    prev_hname: prev_h_name,
-                    hname: edithname,
-                    prev_fxn: prev_fxn,
-                    fxn: editfunc,
-                    house_id: h_id,
-                    loc: editLoc
-                  },
-                  success: function (data) {
-                      alert("House edited");
-                      //window.location = "/phpork/admin/home"; 
-                      location.reload(); 
-                  }    
-                });
-              }
+              
+             $.ajax({
+              url: '/phpork/gateway/admin.php',
+              type: 'post',
+              data : {
+                editHouseName: '1',
+                user: user,
+                prev_hno: prev_h_no,
+                hno: edithnum, 
+                prev_hname: prev_h_name,
+                hname: edithname,
+                prev_fxn: prev_fxn,
+                fxn: editfunc,
+                house_id: h_id,
+                loc: editLoc
+              },
+              success: function (data) {
+                if(data.indexOf("empty") != -1)
+                  alert("Please select what to edit.")
+                else{
+                  alert("House edited");
+
+                  location.reload();
+                }
+                  
+                 
+              }    
+            });
+              
               
 
           });
@@ -1201,6 +1224,7 @@
               },
               success: function (data) { 
                  var data = jQuery.parseJSON(data); 
+                 $('#h_addpen').html("<option value='' disabled selected>Select house...</option>");
                     for(i=0;i<data.length;i++){
                       $("#h_addpen").append($("<option></option>").attr("value",data[i].h_id)
                         .attr("name","house")
@@ -1210,7 +1234,7 @@
                   } 
             });
         });
-        $('#h_addpen').on("change", function(e) {
+       /*$('#h_addpen').on("change", function(e) {
             e.preventDefault(); 
             var house = $('#h_addpen').val();
 
@@ -1223,6 +1247,7 @@
               },
               success: function (data) { 
                  var data = jQuery.parseJSON(data); 
+                    $('#pno_addpen').html(" <option value='' disabled selected>Select house...</option> ");
                     for(i=0;i<data.length;i++){
                       $("#pno_addpen").append($("<option></option>").attr("value",data[i].pen_id)
                         .attr("name","pen")
@@ -1231,7 +1256,7 @@
 
                   } 
             });
-           });
+           });*/
 
         $('#f_editpen').on("change", function(e) {
             e.preventDefault(); 
@@ -1246,6 +1271,7 @@
                 },
                 success: function (data) { 
                    var data = jQuery.parseJSON(data); 
+                   $('#h_editpen').html("<option value='' disabled selected>Select house...</option>")
                       for(i=0;i<data.length;i++){
                         $("#h_editpen").append($("<option></option>").attr("value",data[i].h_id)
                           .attr("name","house")
@@ -1268,41 +1294,44 @@
                   house: house
                 },
                 success: function (data) { 
+                  var data = jQuery.parseJSON(data); 
+                  $('#searchPen').html("<option selected></option><option disabled style='font-weight:bold;color:black;''>Select pen number...</option>");
+                  for(i=0;i<data.length;i++){
+                    $("#searchPen").append($("<option></option>").attr("value",data[i].pen_id)
+                      .attr("name","pen")
+                      .text("Pen " +data[i].pen_no)); 
+                  }
+                   $("#searchPen").trigger("chosen:updated");
+
+                     
+                }
+                   
+              });
+           });
+
+       /* $('#loc_editpen').on("change", function(e) {
+            e.preventDefault(); 
+              var location = $('#loc_editpen').val();
+
+              $.ajax({
+                url: '/phpork/gateway/house.php',
+                type: 'post',
+                data : {
+                  getHouseByLoc: '1',
+                  loc: location
+                },
+                success: function (data) { 
                    var data = jQuery.parseJSON(data); 
                       for(i=0;i<data.length;i++){
-                        $("#searchPen").append($("<option></option>").attr("value",data[i].pen_id)
-                          .attr("name","pen")
-                          .text("Pen " +data[i].pen_no)); 
+                        $("#hno_editpen").append($("<option></option>").attr("value",data[i].h_id)
+                          .attr("name","house")
+                          .text("House " +data[i].h_no)); 
                       }
-                       $("#searchPen").trigger("chosen:updated");
 
                     } 
               });
            });
-
-        // $('#loc_editpen').on("change", function(e) {
-        //     e.preventDefault(); 
-        //       var location = $('#loc_editpen').val();
-
-        //       $.ajax({
-        //         url: '/phpork/gateway/house.php',
-        //         type: 'post',
-        //         data : {
-        //           getHouseByLoc: '1',
-        //           loc: location
-        //         },
-        //         success: function (data) { 
-        //            var data = jQuery.parseJSON(data); 
-        //               for(i=0;i<data.length;i++){
-        //                 $("#hno_editpen").append($("<option></option>").attr("value",data[i].h_id)
-        //                   .attr("name","house")
-        //                   .text("House " +data[i].h_no)); 
-        //               }
-
-        //             } 
-        //       });
-        //    });
-
+      */
          $('#addPen').on("click",function() {
            e.preventDefault(); 
             $('#myModalPen').modal('show');
@@ -1370,9 +1399,8 @@
                 user:user
               },
               success: function (data) { 
-                var data = jQuery.parseJSON(data); 
                   alert("Pen added");
-                   location.reload();
+                  location.reload();
                 } 
             });
           }else{
@@ -1387,8 +1415,8 @@
 
          $('#saveEditPen').on("click",function(){
             var user = $('#userId').val();
-            // var editfarm = $('#loc_editpen').val();
-            // var edithouse2 = $('#hno_editpen').val();
+           /* var editfarm = $('#loc_editpen').val();
+            var edithouse2 = $('#hno_editpen').val();*/
             var prev_pen_no = $('#prev_pen_no').val();
             var editpenno = $('#pno_editpen').val();
             var prev_pen_fxn = $('#prev_pen_fxn').val();
@@ -1396,26 +1424,31 @@
             var prev_pen_id = $('#prev_pen_id').val();
            
             
-             if((editpenno != '') || (editfunc2 != '') ){
-                 $.ajax({
-                    url: '/phpork/gateway/admin.php',
-                    type: 'post',
-                    data : {
-                      editPenName: '1',
-                      user: user,
-                      prev_penno: prev_pen_no,
-                      penno: editpenno,
-                      prev_fxn: prev_pen_fxn,
-                      fxn: editfunc2,
-                      pen_id: prev_pen_id
-                    },
-                    success: function (data) {
-                        alert("Pen edited");
-                        // window.location = "/phpork/admin/home"; 
-                        location.reload();
-                    }    
-                  });
-                }
+             
+             $.ajax({
+                url: '/phpork/gateway/admin.php',
+                type: 'post',
+                data : {
+                  editPenName: '1',
+                  user: user,
+                  prev_penno: prev_pen_no,
+                  penno: editpenno,
+                  prev_fxn: prev_pen_fxn,
+                  fxn: editfunc2,
+                  pen_id: prev_pen_id
+                },
+                success: function (data) {
+                  if(data.indexOf("empty") != -1)
+                    alert("Please select what to edit");
+                  else{
+                    alert("Pen edited");
+                    location.reload();
+                  }
+                   
+                  
+                }    
+              });
+                
          
 
           });
@@ -1510,28 +1543,28 @@
             var prev_prnt_id = $('#prev_parent_id').val();
            
             
-             if(newlabel_id != '' || newparentLabel != '' ){
-                 $.ajax({
-                    url: '/phpork/gateway/admin.php',
-                    type: 'post',
-                    data : {
-                      editParent: '1',
-                      user: user,
-                      prev_parent: prev_prnt_label,
-                      parent: newparentLabel,
-                      prev_id: prev_label_id,
-                      id: newlabel_id,
-                      parent_id: prev_prnt_id
-                    },
-                    success: function (data) {
-                        alert(newlabel_id);
-                        location.reload();
-                    }    
-                  });
-              }else{
-                alert("Please input parent label/label id.");
+           $.ajax({
+              url: '/phpork/gateway/admin.php',
+              type: 'post',
+              data : {
+                editParent: '1',
+                user: user,
+                prev_parent: prev_prnt_label,
+                parent: newparentLabel,
+                prev_id: prev_label_id,
+                id: newlabel_id,
+                parent_id: prev_prnt_id
+              },
+              success: function (data) {
+                if(data.indexOf("empty")!= -1){
+                  alert("Please input parent label/label id.");
+                }else
+                  alert("Edited successfully!");
+                  
                 location.reload();
-              }
+              }    
+            });
+              
          
 
           });
@@ -1548,7 +1581,7 @@
         });
 
         $('#addBreedBtn').on("click",function() {
-          console.log("add");
+         
           $('#chooseToDoBreed').attr("style", "display: none");
           $('#addBreedDetails').attr("style", "display: inline-block");
           $('#editBreed').attr("style", "display: none");
@@ -1606,63 +1639,63 @@
            
         });
 
-         $('#saveEditBreed').on("click",function(){
-            var user = $('#userId').val();
-            var prev_br_name = $('#prev_br_name').val();
-            var breednameEdit = $('#breednameEdit').val();
-            var prev_br_id = $('#prev_br_id').val();
+        $('#saveEditBreed').on("click",function(){
+          var user = $('#userId').val();
+          var prev_br_name = $('#prev_br_name').val();
+          var breednameEdit = $('#breednameEdit').val();
+          var prev_br_id = $('#prev_br_id').val();
            
             
-              if((breed_name != '') ){
-                 $.ajax({
-                    url: '/phpork/gateway/admin.php',
-                    type: 'post',
-                    data : {
-                      editBreed: '1',
-                      user: user,
-                      prev_bname: prev_br_name,
-                      breed_name: breednameEdit,
-                      breed_id: prev_br_id
-                    },
-                    success: function (data) {
-                        alert("Breed edited");
-                        location.reload();
-                    }    
-                  });
-              }else{
+              
+          $.ajax({
+            url: '/phpork/gateway/admin.php',
+            type: 'post',
+            data : {
+              editBreed: '1',
+              user: user,
+              prev_bname: prev_br_name,
+              breed_name: breednameEdit,
+              breed_id: prev_br_id
+            },
+            success: function (data) {
+              if(data.indexOf("empty")!= -1)
                 alert("Please input breed name.");
-                location.reload();
-              }
+              else
+                alert("Breed edited");
+              location.reload();
+            }    
+          });
+              
          
 
-          });
+        });
          /*End of Add Breed*/
 
           /*Add Feed*/
-         $('#addFeed').on("click",function() {
-           e.preventDefault(); 
-            $('#myModalFeed').modal('show');
-            $('#chooseToDoFeed').attr("style", "display: inline-block");
-            $('#addFeedDetails').attr("style", "display: none");
-             $('#editFeed').attr("style", "display: none");
+       $('#addFeed').on("click",function() {
+         e.preventDefault(); 
+          $('#myModalFeed').modal('show');
+          $('#chooseToDoFeed').attr("style", "display: inline-block");
+          $('#addFeedDetails').attr("style", "display: none");
+          $('#editFeed').attr("style", "display: none");
           
         });
 
-          $('#addFeedBtn').on("click",function() {
-          console.log("add");
-            $('#addFeedDetails').attr("style", "display: inline-block");
-             $('#editFeed').attr("style", "display: none");
-             $('#editFeedSearch').attr("style", "display: none");
-             $('#editFeedDetails').attr("style", "display: none");
-              $('#chooseToDoFeed').attr("style", "display: none");
+        $('#addFeedBtn').on("click",function() {
+        
+          $('#addFeedDetails').attr("style", "display: inline-block");
+          $('#editFeed').attr("style", "display: none");
+          $('#editFeedSearch').attr("style", "display: none");
+          $('#editFeedDetails').attr("style", "display: none");
+          $('#chooseToDoFeed').attr("style", "display: none");
           
         });
-           $('#editFeedBtn').on("click",function() {
-            $('#editFeed').attr("style", "display: inline-block");
-            $('#editFeedSearch').attr("style", "display: inline-block");
-            $('#editFeedDetails').attr("style", "display: none");
-            $('#addFeedDetails').attr("style", "display: none");
-            $('#chooseToDoFeed').attr("style", "display: none");
+        $('#editFeedBtn').on("click",function() {
+          $('#editFeed').attr("style", "display: inline-block");
+          $('#editFeedSearch').attr("style", "display: inline-block");
+          $('#editFeedDetails').attr("style", "display: none");
+          $('#addFeedDetails').attr("style", "display: none");
+          $('#chooseToDoFeed').attr("style", "display: none");
           
         });
 
@@ -1676,20 +1709,20 @@
             $('#editFeed').attr("style", "display: none");
             $('#addFeedDetails').attr("style", "display: none");
             $('#chooseToDoFeed').attr("style", "display: inline-block");
-             $('#editFeedDetails').attr("style", "display: none");
+            $('#editFeedDetails').attr("style", "display: none");
           
         });
 
-          $('#backToFeed2').on("click",function() {
-          
-            $('#editFeed').attr("style", "display: none");
-            $('#addFeedDetails').attr("style", "display: none");
-            $('#chooseToDoFeed').attr("style", "display: inline-block");
-            $('#editFeedDetails').attr("style", "display: none");
-          });
+        $('#backToFeed2').on("click",function() {
+        
+          $('#editFeed').attr("style", "display: none");
+          $('#addFeedDetails').attr("style", "display: none");
+          $('#chooseToDoFeed').attr("style", "display: inline-block");
+          $('#editFeedDetails').attr("style", "display: none");
+        });
           
 
-         $('#saveFeed').on("click",function(){
+        $('#saveFeed').on("click",function(){
           var feed_name = $("#feed_name").val();
           var feed_type = $("#feed_type").val();
           var user = $('#userId').val();
@@ -1720,94 +1753,94 @@
            
         });
 
-         $('#saveEditFeed').on("click",function(){
-            var user = $('#userId').val();
-            var prev_feed_name = $('#prev_feed_name').val();
-            var edit_feed_name = $('#edit_feed_name').val();
-            var prev_feed_type = $('#prev_feed_type').val();
-            var edit_feed_type = $('#edit_feed_type').val();
-            var prev_feed_id = $('#prev_feed_id').val();
+        $('#saveEditFeed').on("click",function(){
+          var user = $('#userId').val();
+          var prev_feed_name = $('#prev_feed_name').val();
+          var edit_feed_name = $('#edit_feed_name').val();
+          var prev_feed_type = $('#prev_feed_type').val();
+          var edit_feed_type = $('#edit_feed_type').val();
+          var prev_feed_id = $('#prev_feed_id').val();
            
             
-             if((edit_feed_name != '') || (edit_feed_type != '') ){
-                 $.ajax({
-                    url: '/phpork/gateway/admin.php',
-                    type: 'post',
-                    data : {
-                      editFeedName: '1',
-                      user: user,
-                      prev_fname: prev_feed_name,
-                      fname: edit_feed_name,
-                      prev_ftype: prev_feed_type,
-                      ftype: edit_feed_type,
-                      feed_id: prev_feed_id
-                    },
-                    success: function (data) {
-                        alert("Feed details edited!");
-                        location.reload();
-                    }    
-                  });
-              }else{
-                alert("Please input either feed name/feed type.");
-                location.reload();
-              }
+           $.ajax({
+              url: '/phpork/gateway/admin.php',
+              type: 'post',
+              data : {
+                editFeedName: '1',
+                user: user,
+                prev_fname: prev_feed_name,
+                fname: edit_feed_name,
+                prev_ftype: prev_feed_type,
+                ftype: edit_feed_type,
+                feed_id: prev_feed_id
+              },
+              success: function (data) {
+                if(data.indexOf("empty")!= -1)
+                  alert("Please input either feed name/feed type.");
+                else
+                  alert("Feed details edited!");
+                  location.reload();
+              }    
+            });
+                
+               
          
 
-          });
+        });
          /*End of Add Feed*/
 
 
          /*Add Med*/
-          $('#addMeds').on("click",function() {
-           e.preventDefault(); 
-            $('#myModalMeds').modal('show');
-            $('#chooseToDoMeds').attr("style", "display: inline-block");
-            $('#addMedsDetails').attr("style", "display: none");
-             $('#editMeds').attr("style", "display: none");
+        $('#addMeds').on("click",function() {
+          e.preventDefault(); 
+          $('#myModalMeds').modal('show');
+          $('#chooseToDoMeds').attr("style", "display: inline-block");
+          $('#addMedsDetails').attr("style", "display: none");
+          $('#editMeds').attr("style", "display: none");
           
         });
 
-          $('#addMedsBtn').on("click",function() {
-            $('#addMedsDetails').attr("style", "display: inline-block");
-             $('#editMeds').attr("style", "display: none");
-             $('#editMedsSearch').attr("style", "display: none");
-             $('#editMedsDetails').attr("style", "display: none");
-              $('#chooseToDoMeds').attr("style", "display: none");
+        $('#addMedsBtn').on("click",function() {
+          $('#addMedsDetails').attr("style", "display: inline-block");
+          $('#editMeds').attr("style", "display: none");
+          $('#editMedsSearch').attr("style", "display: none");
+          $('#editMedsDetails').attr("style", "display: none");
+          $('#chooseToDoMeds').attr("style", "display: none");
           
         });
-           $('#editMedsBtn').on("click",function() {
-            $('#editMeds').attr("style", "display: inline-block");
-            $('#editMedsSearch').attr("style", "display: inline-block");
-            $('#editMedsDetails').attr("style", "display: none");
-            $('#addMedsDetails').attr("style", "display: none");
-            $('#chooseToDoMeds').attr("style", "display: none");
+        $('#editMedsBtn').on("click",function() {
+          $('#editMeds').attr("style", "display: inline-block");
+          $('#editMedsSearch').attr("style", "display: inline-block");
+          $('#editMedsDetails').attr("style", "display: none");
+          $('#addMedsDetails').attr("style", "display: none");
+          $('#chooseToDoMeds').attr("style", "display: none");
           
         });
 
         $('#searchMeds').on('change',function(){
-              var id = $("#searchMeds").val();
-              viewDetailsMeds(id);
-            });
+          var id = $("#searchMeds").val();
+          viewDetailsMeds(id);
+        });
 
         $('#backToMeds1').on("click",function() {
           
-            $('#editMeds').attr("style", "display: none");
-            $('#addMedsDetails').attr("style", "display: none");
-            $('#chooseToDoMeds').attr("style", "display: inline-block");
-             $('#editMedsDetails').attr("style", "display: none");
+          $('#editMeds').attr("style", "display: none");
+          $('#addMedsDetails').attr("style", "display: none");
+          $('#chooseToDoMeds').attr("style", "display: inline-block");
+          $('#editMedsDetails').attr("style", "display: none");
           
         });
 
-          $('#backToMeds2').on("click",function() {
+        $('#backToMeds2').on("click",function() {
           
-            $('#editMeds').attr("style", "display: none");
-            $('#addMedsDetails').attr("style", "display: none");
-            $('#chooseToDoMeds').attr("style", "display: inline-block");
-             $('#editMedsDetails').attr("style", "display: none");
-          });
+          $('#editMeds').attr("style", "display: none");
+          $('#addMedsDetails').attr("style", "display: none");
+          $('#chooseToDoMeds').attr("style", "display: inline-block");
+          $('#editMedsDetails').attr("style", "display: none");
+        });
 
 
-         $('#saveMeds').on("click",function(){
+        $('#saveMeds').on("click",function(){
           var med_name = $("#med_name").val();
           var med_type = $("#med_type").val();
           var user = $('#userId').val();
@@ -1840,41 +1873,41 @@
         });
 
          
-          $('#saveEditMeds').on("click",function(){
-            var user = $('#userId').val();
-            var prev_med_name = $('#prev_med_name').val();
-            var edit_med_name = $('#edit_med_name').val();
-            var prev_med_type = $('#prev_med_type').val();
-            var edit_med_type = $('#edit_med_type').val();
-            var prev_med_id = $('#prev_med_id').val();
+        $('#saveEditMeds').on("click",function(){
+          var user = $('#userId').val();
+          var prev_med_name = $('#prev_med_name').val();
+          var edit_med_name = $('#edit_med_name').val();
+          var prev_med_type = $('#prev_med_type').val();
+          var edit_med_type = $('#edit_med_type').val();
+          var prev_med_id = $('#prev_med_id').val();
            
             
-             if((edit_med_name != '') || (edit_med_type != '') ){
-                 $.ajax({
-                    url: '/phpork/gateway/admin.php',
-                    type: 'post',
-                    data : {
-                      editMedName: '1',
-                      user: user,
-                      prev_mname: prev_med_name,
-                      mname: edit_med_name,
-                      prev_mtype: prev_med_type,
-                      mtype: prev_med_type,
-                      med_id: prev_med_id
-                    },
-                    success: function (data) {
-                        alert("Medication edited");
-                        //window.location = "/phpork/admin/home";
-                        location.reload();
-                    }    
-                  });
-              }else{
+             
+          $.ajax({
+            url: '/phpork/gateway/admin.php',
+            type: 'post',
+            data : {
+              editMedName: '1',
+              user: user,
+              prev_mname: prev_med_name,
+              mname: edit_med_name,
+              prev_mtype: prev_med_type,
+              mtype: prev_med_type,
+              med_id: prev_med_id
+            },
+            success: function (data) {
+              if(data.indexOf("empty") != -1)
                 alert("Please input either medication name/medication type.");
-                location.reload();
-              }
+              else
+                alert("Medication edited");
+                
+              location.reload();
+            }    
+          });
+              
          
 
-          });
+        });
          /*End of Add Med*/
           
 
@@ -1887,7 +1920,6 @@
           },
           success: function (data) { 
              var data = jQuery.parseJSON(data);
-             console.log('User');
                 for(i=0;i<data.length;i++){
                   $("#searchUser").append($("<option></option>").attr("value",data[i].user_id)
                     .attr("name","user")
@@ -1897,8 +1929,8 @@
               } 
           
         });
-    //select farm
-    $.ajax({
+        /*select farm*/
+        $.ajax({
           url: '/phpork/gateway/location.php',
           type: 'post',
           data : {
@@ -1914,10 +1946,10 @@
                    $("#f_editpen").append($("<option></option>").attr("value",data[i].loc_id)
                     .attr("name","location")
                     .text(data[i].loc_name)); 
-                   // $("#loc_editpen").append($("<option></option>").attr("value",data[i].loc_id)
-                   //  .attr("name","location")
-                   //  .text(data[i].loc_name)); 
-                   
+                  /* $("#loc_editpen").append($("<option></option>").attr("value",data[i].loc_id)
+                    .attr("name","location")
+                    .text(data[i].loc_name)); 
+                   */
                    $("#farmOptions").append($("<option></option>").attr("value",data[i].loc_id)
                     .attr("name","location")
                     .text(data[i].loc_name));
@@ -1929,114 +1961,113 @@
                    $("#loc1").append($("<option></option>").attr("value",data[i].loc_id)
                     .attr("name","location")
                     .text(data[i].loc_name));
-                  // $("#editloc2").append($("<option></option>").attr("value",data[i].loc_id)
-                  //   .attr("name","location")
-                  //   .text(data[i].loc_name)); 
+                 /* $("#editloc2").append($("<option></option>").attr("value",data[i].loc_id)
+                    .attr("name","location")
+                    .text(data[i].loc_name)); */
                 }
                 $("#farmOptions").trigger("chosen:updated");
                    
               } 
-          
+              
         });
 
         $('#loc1').on("change", function(e) {
-            e.preventDefault(); 
-              var location = $('#loc1').val();
-
-              $.ajax({
-                url: '/phpork/gateway/house.php',
-                type: 'post',
-                data : {
-                  getHouseByLoc: '1',
-                  loc: location
-                },
-                success: function (data) { 
-                   var data = jQuery.parseJSON(data); 
-                      for(i=0;i<data.length;i++){
-                        $("#searchHouse").append($("<option></option>").attr("value",data[i].h_id)
-                          .attr("name","house")
-                          .text("House " +data[i].h_no)); 
-                      }
-                       $("#searchHouse").trigger("chosen:updated");
-                    } 
-              });
-           });
+          e.preventDefault(); 
+          var location = $('#loc1').val();
 
           $.ajax({
-          url: '/phpork/gateway/pig.php',
-          type: 'post',
-          data : {
-            ddl_parent: '1'
-          },
-          success: function (data) { 
-             var data = jQuery.parseJSON(data);
-                for(i=0;i<data.length;i++){
-                  $("#searchParent").append($("<option></option>").attr("value",data[i].parent_id)
-                    .attr("name","user")
-                    .text(data[i].label+ "-" +data[i].label_id)); 
-                }
-                 $("#searchParent").trigger("chosen:updated");  
-              }   
-          
+            url: '/phpork/gateway/house.php',
+            type: 'post',
+            data : {
+              getHouseByLoc: '1',
+              loc: location
+            },
+            success: function (data) {
+               var data = jQuery.parseJSON(data);
+                $("#searchHouse").html('<option selected></option><option disabled style="font-weight:bold;color:black;">Select house number..</option>');
+                  for(i=0;i<data.length;i++){
+                    $("#searchHouse").append($("<option></option>").attr("value",data[i].h_id)
+                      .attr("name","house")
+                      .text("House " +data[i].h_no)); 
+                  }
+                   $("#searchHouse").trigger("chosen:updated");
+                } 
+            });
         });
 
-          $.ajax({
-          url: '/phpork/gateway/pig.php',
-          type: 'post',
-          data : {
-            ddl_breeds: '1'
-          },
-          success: function (data) { 
-             var data = jQuery.parseJSON(data);
-                for(i=0;i<data.length;i++){
-                  $("#searchBreed").append($("<option></option>").attr("value",data[i].brid)
-                    .attr("name","breed")
-                    .text(data[i].brname)); 
-                }
-                  $("#searchBreed").trigger("chosen:updated");  
-              } 
-          
-        });
+        $.ajax({
+        url: '/phpork/gateway/pig.php',
+        type: 'post',
+        data : {
+          ddl_parent: '1'
+        },
+        success: function (data) { 
+           var data = jQuery.parseJSON(data);
+              for(i=0;i<data.length;i++){
+                $("#searchParent").append($("<option></option>").attr("value",data[i].parent_id)
+                  .attr("name","user")
+                  .text(data[i].label+ "-" +data[i].label_id)); 
+              }
+               $("#searchParent").trigger("chosen:updated");  
+            }   
+        
+      });
 
-          $.ajax({
-          url: '/phpork/gateway/feeds.php',
-          type: 'post',
-          data : {
-            ddl_feeds: '1'
-          },
-          success: function (data) { 
-             var data = jQuery.parseJSON(data);
-                for(i=0;i<data.length;i++){
-                  $("#searchFeed").append($("<option></option>").attr("value",data[i].feed_id)
-                    .attr("name","user")
-                    .text(data[i].feed_name)); 
-                }
-                  $("#searchFeed").trigger("chosen:updated");  
-              } 
-          
-        });
-           $.ajax({
-          url: '/phpork/gateway/meds.php',
-          type: 'post',
-          data : {
-            ddl_meds: '1'
-          },
-          success: function (data) { 
-             var data = jQuery.parseJSON(data);
-                for(i=0;i<data.length;i++){
-                  $("#searchMeds").append($("<option></option>").attr("value",data[i].med_id)
-                    .attr("name","user")
-                    .text(data[i].med_name)); 
-                }
-                  $("#searchMeds").trigger("chosen:updated");  
-              } 
-          
-        });
+      $.ajax({
+        url: '/phpork/gateway/pig.php',
+        type: 'post',
+        data : {
+          ddl_breeds: '1'
+        },
+        success: function (data) { 
+           var data = jQuery.parseJSON(data);
+              for(i=0;i<data.length;i++){
+                $("#searchBreed").append($("<option></option>").attr("value",data[i].brid)
+                  .attr("name","breed")
+                  .text(data[i].brname)); 
+              }
+                $("#searchBreed").trigger("chosen:updated");  
+            } 
+        
+      });
+
+      $.ajax({
+      url: '/phpork/gateway/feeds.php',
+      type: 'post',
+      data : {
+        ddl_feeds: '1'
+      },
+      success: function (data) { 
+         var data = jQuery.parseJSON(data);
+            for(i=0;i<data.length;i++){
+              $("#searchFeed").append($("<option></option>").attr("value",data[i].feed_id)
+                .attr("name","user")
+                .text(data[i].feed_name)); 
+            }
+              $("#searchFeed").trigger("chosen:updated");  
+          } 
+      
     });
-
-
-    </script>
-    <script>
+    $.ajax({
+      url: '/phpork/gateway/meds.php',
+      type: 'post',
+      data : {
+        ddl_meds: '1'
+      },
+      success: function (data) { 
+         var data = jQuery.parseJSON(data);
+            for(i=0;i<data.length;i++){
+              $("#searchMeds").append($("<option></option>").attr("value",data[i].med_id)
+                .attr("name","user")
+                .text(data[i].med_name)); 
+            }
+              $("#searchMeds").trigger("chosen:updated");  
+          } 
+      
+    });
+  });
+</script>
+<script>
     $(document).ready(function(){
         /* Add user's tooltip*/
         $('.userDiv').tooltip({trigger: "hover"});
@@ -2104,8 +2135,17 @@
               success: function (data) { 
                 var data = jQuery.parseJSON(data);
                   $('#unameEdit').attr("placeholder", data[0].user_name);
-                  $('#uTypeEdit').attr("placeholder", data[0].user_type);
-                  // $('#passwordEdit').attr("placeholder", data[0].password);
+                  if(data[0].user_type == 1){
+                    usr = "Admin";
+                  }else if(data[0].user_type == 2){
+                    usr = "Encoder";
+                  }else if(data[0].user_type == 5){
+                    usr = "Not employee";
+                  }
+                  $('#uTypeEdit').append($("<option>Current: "+usr+"</option>").attr("disabled", true)
+                                                              .attr("selected",true)
+                                                              .attr("value", data[0].user_type));
+                  /*$('#passwordEdit').attr("placeholder", data[0].password);*/
                   $('#editUNAME').append($("<input></input>").attr("type", "hidden")
                                                               .attr("id", "edit_uid")
                                                               .attr("value", data[0].user_id));
@@ -2140,7 +2180,6 @@
               },
               success: function (data) { 
                 var data = jQuery.parseJSON(data);
-                console.log(data[0].loc_name);
                   $('#farmnameEdit').attr("placeholder", data[0].loc_name);
                   $('#faddEdit').attr("placeholder", data[0].address);
 
@@ -2172,7 +2211,7 @@
                   },
                   success: function (data) { 
                     var data = jQuery.parseJSON(data);
-                      // $('#editloc2').attr("placeholder", data[0].loc_id);
+                      /*$('#editloc2').attr("placeholder", data[0].loc_id);*/
                        $('#edithnum').attr("placeholder", data[0].h_no);
                         $('#editfunc').attr("placeholder", data[0].fxn);
                        $('#edithname').attr("placeholder", data[0].h_name);
@@ -2202,7 +2241,6 @@
       }
 
        function viewDetailsPen(id){
-        console.log("PEN");
         $.ajax({
               url: '/phpork/gateway/pen.php',
               type: 'post',
@@ -2212,8 +2250,8 @@
               },
               success: function (data) { 
                 var data = jQuery.parseJSON(data);
-                  // $('#loc_editpen').attr("placeholder", data[0].loc_id);
-                   // $('#hno_editpen').attr("placeholder", data[0].h_id);
+                  /*$('#loc_editpen').attr("placeholder", data[0].loc_id);
+                   $('#hno_editpen').attr("placeholder", data[0].h_id);*/
                   $('#pno_editpen').attr("placeholder", data[0].pen_no);
                   $('#fxn_editpen').attr("placeholder", data[0].fxn);
 

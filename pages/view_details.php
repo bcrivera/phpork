@@ -1193,12 +1193,12 @@
 	           		
 		          count = count +1;
 	       		}
-	       		$(".sel").children("tr").children("td").children("select").on("change", function(){//NOTYET
+	       		$(".sel").children("tr").children("td").children("select").on("change", function(){
 	       				var mrid = $(this).parent("td").children('input').attr('value');
 	       				var med_id = $(this).attr('id');
 	           			var editedMeds = {};	
-	           			editedMeds['medid'] = $('#'+med_id).val();//NOTYET
-	           			editedMeds['mrid'] = mrid; //NOTYET
+	           			editedMeds['medid'] = $('#'+med_id).val();
+	           			editedMeds['mrid'] = mrid;
 
 	           			editedMedications.push(editedMeds);
 
@@ -1248,7 +1248,6 @@
 	                    },
 	                    success: function (data) { 
 	                      alert("Saved details successfully!"); 
-	                     // alert(mrid);
 	                      location.reload();
 
 	                          
@@ -1456,15 +1455,12 @@
 			   		
 			   		count = count +1;
 			   }
-			   $(".selFeed").children('tr').children('td').children('select').on("change", function(){ //NOTYET
+			   $(".selFeed").children('tr').children('td').children('select').on("change", function(){ 
 			   			var ft_id = $(this).parent('td').children('input').attr('value');
 	       				var fid = $(this).attr('id');
 						var editedF = {};
-						//alert(ft_id);
-						editedF['fid'] = $('#'+fid).val(); //NOTYET
-						//editedFeeds['ft_id'] = $('#feed'+data[i].ft_id).val();
-						editedF['ft_id'] =ft_id; //NOTYET
-						//alert(prev_fid);
+						editedF['fid'] = $('#'+fid).val(); 
+						editedF['ft_id'] =ft_id; 
 						editedFeeds.push(editedF);
 
 
@@ -1495,7 +1491,7 @@
          $('#saveEditFeeds').on("click",function() {
          	
 		 	
-		 	var user = $("#userId").val(); //NOTYET
+		 	var user = $("#userId").val(); 
 
 		 	$.each(editedFeeds, function(key, value) {
 		 			var ft_id = value.ft_id;
@@ -2021,7 +2017,6 @@
           window.location = "/phpork/encoder/home";
         });     
        
-      //}); 
 		function viewPig(pig){
 		 	$.ajax({
 	        url: '/phpork/gateway/pig.php',

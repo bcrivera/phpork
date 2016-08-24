@@ -97,7 +97,7 @@
           var house = $("#dropdown").val(); 
           var location = $('#locid').val();
           if(house == null){
-            alert("Select an option");
+            alert("Select a house");
           }else if(house != "House"){ 
             window.location = "/phpork/farm/house/"+location+"/"+house; 
           }

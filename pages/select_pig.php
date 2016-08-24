@@ -78,24 +78,6 @@
       </div>
     </div>
 
-    <!-- Modal -->
-    <!-- <div id="myModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">  
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Modal Header</h4>
-          </div>
-          <div class="modal-body">
-            <p>Some text in the modal.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
     <div class="page-footer"> 
       Prototype Pork Traceability System || Copyright &copy; 2014 - <?php echo date("Y");?> UPLB ||funded by PCAARRD 
     </div>
@@ -120,12 +102,9 @@
           var location = $("#locid").val(); 
           console.log(pig);
           if(pig == null){
-            alert("Select an option");
+            alert("Select a pig");
           }else if(pig != "Pig"){ 
              window.location = "/phpork/farm/house/pen/pig/" +location+ "/" +houseno+ "/" +penno+ "/" +pig; 
-          }else{ 
-            $('#nextPg').attr("data-toggle", "modal")
-                        .attr("data-target", "#myModal"); 
           }
         });
 

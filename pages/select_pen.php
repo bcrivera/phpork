@@ -101,53 +101,19 @@
           var houseno = $("#houseid").val(); 
           var location = $("#locid").val(); 
           if(penno == null){
-            alert("Select an option");
+            alert("Select a pen");
           }else if(penno != "Pen"){ 
              window.location = "/phpork/farm/house/pen/" +location+ "/" +houseno+ "/" +penno; 
           }
         });
 
-        
-
         $('#backP').on("click",function() {
           var location = $("#locid").val();
           window.location = "/phpork/farm/" +location; 
         }); 
-
-       
-
-        $('#save').on("click",function(){
-          var houseno = $("#houseid").val();
-          var location = $('#locid').val();
-          var penNum = $("#pennum").val(); 
-          var func = $("#func").val(); 
-          if((penNum != '') && (func != '') ){
-            $.ajax({
-              url: '/phpork/gateway/pen.php',
-              type: 'post',
-              data : {
-                addPenName: '1',
-                penno: penNum,
-                fxn:  func,
-                h_id: houseno
-              },
-              success: function (data) { 
-                var data = jQuery.parseJSON(data); 
-                $("#dropdown").append($("<option></option>").attr("value",data.pen_id)
-                              .attr("name","pen")
-                              .attr("selected", "true")
-                              .text("Pen " +data.pen_no)); 
-                $('#select').attr("selected", "false");
-                  alert("Pen added");
-                } 
-            });
-          }
-          window.location = "/phpork/farm/house/"+location+"/"+houseno; 
-        });
-      }); 
+      });
     </script>
-
-    <script>
+   <script>
       $(document).ready(function () {
         var house = $('#houseid').val();
         $.ajax({

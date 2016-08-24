@@ -541,14 +541,11 @@
 
                 var user = $('#userId').val();
 
-<<<<<<< HEAD
-       
-=======
+
                // alert(pigId);
                 if(lastMedGiven == "" || dateMedGiven == "" || timeMedGiven == "" || medQty == "" || unit == ""){
                    alert("Please fill up all fields!");
                 }else{
->>>>>>> origin/master
 
                  $.ajax({
                     url: '/phpork/gateway/pig.php',

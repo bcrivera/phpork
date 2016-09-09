@@ -69,6 +69,10 @@
 		echo json_encode($db->getMedsTransDetails($med)); 
 		/*localhost/phpork2/gateway/meds.php?getMedsTransDetails=1&med=1*/
 	} 
+	if(isset($_POST['getMaxMedDate'])){
+		echo json_encode($db->getMaxMedDate()); 
+		/*localhost/phpork2/gateway/meds.php?getMedsDetails=1&med=1*/
+	} 
 	if(isset($_POST['ddl_meds'])){
 		$arr_med = $db->ddl_meds(); 
 		echo json_encode($arr_med);

@@ -1015,10 +1015,10 @@
 		{
 				$link = $this->connect();
 				$search = "SELECT DISTINCT parent_id, label_id
-							FROM parents where label='sow';";
+							FROM parents where label='foster sow';";
 				$resultq = mysqli_query($link, $search);
 				$sow = array();
-				$sow_arr = array();
+				$fsow_arr = array();
 				while ($row = mysqli_fetch_row($resultq)) {	
 					$sow['parent_id'] =$row[0];
 					$sow['label_id'] =$row[1];
@@ -1493,6 +1493,23 @@
 				return $m_arr;
 				
 		}
+		public function getMaxMedDate()
+		{
+				$link = $this->connect();
+				$query = " SELECT max(date_given)
+							FROM med_record";
+				$result = mysqli_query($link, $query);
+				$m = array();
+				$m_arr = array();
+				while($row = mysqli_fetch_row($result)){
+					$m['mdate'] = $row[0];
+					$m_arr[] = $m;
+				}
+				
+				
+				return $m_arr;
+				
+		}
 		public function getMedsTransDetails($var)
 		{
 				$link = $this->connect();
@@ -1735,6 +1752,24 @@
 					$f['fid'] = $row[0];
 					$f['ftype'] = $row[1];
 					$f['fname'] = $row[2];
+					$f_arr[] = $f;
+				}
+				
+				
+
+				return $f_arr;
+				
+		}
+		public function getMaxFeedDate()
+		{
+				$link = $this->connect();
+				$query = " SELECT max(date_given)
+							FROM feed_transaction";
+				$result = mysqli_query($link, $query);
+				$f = array();
+				$f_arr = array();
+				while($row = mysqli_fetch_row($result)){
+					$f['fdate'] = $row[0];
 					$f_arr[] = $f;
 				}
 				

@@ -345,14 +345,14 @@
                 var sowParent = $('#sowParent').val();
                 var fosterParent = $('#fosterParent').val();
 		
-		if(farm == null || house == null || pen == null || gender == null || breed == null || boarParent == null || sowParent == null || fosterParent == null){
-			alert("Please fill up all fields");
-		}else{
-              		$('#pig1').attr("style", "display: none");
-              		$('#pig2').attr("style", "display: none");
-              		$('#feeds').attr("style", "display: inline-block");
-              		$('#meds').attr("style", "display: none");
-		}
+            		if(farm == null || house == null || pen == null || gender == null || breed == null || boarParent == null || sowParent == null || fosterParent == null){
+            			alert("Please fill up all fields");
+            		}else{
+                          		$('#pig1').attr("style", "display: none");
+                          		$('#pig2').attr("style", "display: none");
+                          		$('#feeds').attr("style", "display: inline-block");
+                          		$('#meds').attr("style", "display: none");
+            		}
           });
           
 
@@ -362,16 +362,47 @@
                 var dateFeedGiven = $('#dateFeedGiven').val();
                 var timeFeedGiven = $('#timeFeedGiven').val();
                 var feedQty = $('#feedQty').val();
-
-                if(lastFeed == "" || prodDateOfFeed == "" || dateFeedGiven == "" || timeFeedGiven == "" || feedQty == ""){
-                   alert("Please fill up all fields!");
-                }else{
-                    
-                    $('#pig1').attr("style", "display: none");
-                   $('#pig2').attr("style", "display: none");
-                    $('#feeds').attr("style", "display: none");
-                    $('#meds').attr("style", "display: inline-block");
-                }
+                var days = 7;
+                $.ajax({
+                  url: '/phpork/gateway/feeds.php',
+                  type: 'post',
+                  data : {
+                    getMaxFeedDate: '1'
+                  },
+                  success: function (data) { 
+                    var data = jQuery.parseJSON(data); 
+                    var to = new Date(data[0].fdate);
+                    var from = new Date(to -(days * 24 * 60 * 60 * 1000) );
+                    var check = new Date(dateFeedGiven);
+                    var checkprod = new Date(prodDateOfFeed);
+                    var min = new Date("0001-01-01");
+                    var max = new Date("2016-01-01");
+                    var today = new Date();
+                    if(lastFeed == "" || prodDateOfFeed == "" || dateFeedGiven == "" || timeFeedGiven == "" || feedQty == ""){
+                       alert("Please fill up all fields.");
+                    }else{
+                        if(check >= from && check <= to){
+                          $('#pig1').attr("style", "display:none ");
+                          $('#pig2').attr("style", "display: none");
+                          $('#feeds').attr("style", "display: none");
+                          $('#meds').attr("style", "display: inline-block");
+                        
+                        }else if((check >= min && check <= max)  || check > today || (checkprod >= min && checkprod <= max)  || checkprod > today){
+                          alert("Invalid date.");
+                        }else{
+                          alert("Date given is not within the range.");
+                          $('#pig1').attr("style", "display:none ");
+                          $('#pig2').attr("style", "display: none");
+                          $('#feeds').attr("style", "display: none");
+                          $('#meds').attr("style", "display: inline-block");
+                        }
+                        
+                    }
+                       
+                      
+                  } 
+                });
+               
            });
 
          $('#backToPig1').on("click", function() {
@@ -382,28 +413,35 @@
 
           });
 
-         $('#pigDetails2').on("click", function() {
-		            var pigId = $('#pigId').val();
-                var farrowingDate = $('#farrowingDate').val();
-                var weekFarrowed = $('#weekFarrowed').val();
-                var pigStatus= $('#pigStatus').val();
-                var weight = $('#weight').val();
-                var weightType = $('#weightType').val();
-                var rfid = $('#tag_id').val();
-
-                var matchWeight = weightType.match(/[0-9]+/g);
-
+        $('#pigDetails2').on("click", function() {
+            var pigId = $('#pigId').val();
+            var farrowingDate = $('#farrowingDate').val();
+            var weekFarrowed = $('#weekFarrowed').val();
+            var pigStatus= $('#pigStatus').val();
+            var weight = $('#weight').val();
+            var weightType = $('#weightType').val();
+            var rfid = $('#tag_id').val();
+            var today = new Date();
+            var check = new Date(farrowingDate);
+            var matchWeight = weightType.match(/[0-9]+/g);
+            var min = new Date("0001-01-01");
+            var max = new Date("2016-01-01");
         		if(pigId == "" || farrowingDate == "" || weekFarrowed == "" || pigStatus == "" || rfid == "" || weight == "" || weightType == ""){
         			alert("Please fill up all fields");
         		}else if(matchWeight != null ){
                 alert("invalid weight type input")
             }else{
-                    		$('#pig1').attr("style", "display: none");
-                    		$('#pig2').attr("style", "display: inline-block");
-                    		$('#feeds').attr("style", "display: none");
-                    		$('#meds').attr("style", "display: none");
+              if((check >= min && check <= max)  || check > today){
+                alert("Invalid date.");
+              }else{
+                $('#pig1').attr("style", "display: none");
+                $('#pig2').attr("style", "display: inline-block");
+                $('#feeds').attr("style", "display: none");
+                $('#meds').attr("style", "display: none");
+              }
+          		
         		}
-           });
+         });
 
         $('#backToFeeds').on("click", function() {
             $('#pig1').attr("style", "display: none");
@@ -434,16 +472,15 @@
                 },
                 success: function (data) { 
                    var data = jQuery.parseJSON(data); 
-                  /* $("#house").append($("<option></option>").attr("disabled",true).attr("value","").text("Select house.."));*/
-                    
+                  
+                      $("#house").html("<option value='' disabled selected style='display:none;'>Select house..</option>");
+                      
                       for(i=0;i<data.length;i++){
-                        /* document.getElementById("house").innerHTML = '<option value="" disabled selected style="display:none;">Select */house..</option>';
-                        /* document.getElementById("house").innerHTML = '<option value='+data[i].h_id+' name="house">House '+data[i].h_no+'</*/option>';
+                        
                         $("#house").append($("<option></option>").attr("value",data[i].h_id)
                           .attr("name","house")
                           .text("House " +data[i].h_no)); 
                       }
-                     /* $("<option>", { value: '', selected: true }).prependTo("#house");​​​​​​​​​​​*/
                 } 
               });
            });
@@ -461,8 +498,9 @@
                     },
                     success: function (data) { 
                        var data = jQuery.parseJSON(data); 
+                          $("#pen").html("<option value='' disabled selected style='display:none;'>Select pen..</option>");
                           for(i=0;i<data.length;i++){
-                            $("#pen").html($("<option></option>").attr("value",data[i].pen_id)
+                            $("#pen").append($("<option></option>").attr("value",data[i].pen_id)
                               .attr("name","pen")
                               .text("Pen " +data[i].pen_no)); 
                           }
@@ -540,55 +578,80 @@
                 var unit = $('#unit').val(); 
 
                 var user = $('#userId').val();
-
-
-               // alert(pigId);
-                if(lastMedGiven == "" || dateMedGiven == "" || timeMedGiven == "" || medQty == "" || unit == ""){
-                   alert("Please fill up all fields!");
-                }else{
-
-                 $.ajax({
-                    url: '/phpork/gateway/pig.php',
+                $.ajax({
+                    url: '/phpork/gateway/meds.php',
                     type: 'post',
                     data : {
-                      addPigFlag: '1',
-                      new_pid: pigId,
-                      pbdate: farrowingDate,
-                      pweekfar: weekFarrowed,
-                      selStat: pigStatus,
-                      pweight: weight,
-                      pweighttype: weightType,
-                      prfid: rfid,
-                      ploc: farm,
-                      selHouse: house,
-                      selPen: pen,
-                      pgender: gender,
-                      pbreed: breed,
-                      pboar: boarParent,
-                      psow: sowParent,
-                      pfoster: fosterParent,
-                      user_id: user,
-                      selectFeeds: lastFeed,
-                      fprodDate: prodDateOfFeed,
-                      fdate: dateFeedGiven,
-                      ftime: timeFeedGiven,
-                      fqty: feedQty,
-                      selUnit: unit,
-                      selectMeds: lastMedGiven,
-                      medDate: dateMedGiven,
-                      medTime: timeMedGiven,
-                      mqty: medQty
+                      getMaxMedDate: '1'
                     },
                     success: function (data) { 
-                       var data = jQuery.parseJSON(data); 
-                       alert("Pig Added!");
+                      var data = jQuery.parseJSON(data);
+                      var days = 7; 
+                      var to = new Date(data[0].mdate);
+                      var from = new Date(to -(days * 24 * 60 * 60 * 1000) );
+                      var check = new Date(dateMedGiven);
+                      var today = new Date();
+                      var min = new Date("0001-01-01");
+                      var max = new Date("2016-01-01");
+                      if(lastMedGiven == "" || dateMedGiven == "" || timeMedGiven == "" || medQty == "" || unit == ""){
+                         alert("Please fill up all fields!");
+                      }else{
+                        if(check >= from && check <= to){
+                          $.ajax({
+                              url: '/phpork/gateway/pig.php',
+                              type: 'post',
+                              data : {
+                                addPigFlag: '1',
+                                new_pid: pigId,
+                                pbdate: farrowingDate,
+                                pweekfar: weekFarrowed,
+                                selStat: pigStatus,
+                                pweight: weight,
+                                pweighttype: weightType,
+                                prfid: rfid,
+                                ploc: farm,
+                                selHouse: house,
+                                selPen: pen,
+                                pgender: gender,
+                                pbreed: breed,
+                                pboar: boarParent,
+                                psow: sowParent,
+                                pfoster: fosterParent,
+                                user_id: user,
+                                selectFeeds: lastFeed,
+                                fprodDate: prodDateOfFeed,
+                                fdate: dateFeedGiven,
+                                ftime: timeFeedGiven,
+                                fqty: feedQty,
+                                selUnit: unit,
+                                selectMeds: lastMedGiven,
+                                medDate: dateMedGiven,
+                                medTime: timeMedGiven,
+                                mqty: medQty
+                              },
+                              success: function (data) { 
+                                 var data = jQuery.parseJSON(data); 
+                                 alert("Pig Added!");
 
-                     
-                     }
-                  });
-            
-                  window.location = "/phpork/view/farm/house/pen/pig/" +farm+ "/" +house+ "/" +pen+ "/" +pigId;
-                }
+                               
+                               }
+                            });
+                      
+                            window.location = "/phpork/view/farm/house/pen/pig/" +farm+ "/" +house+ "/" +pen+ "/" +pigId;
+                        }
+                        else if((check >= min && check <= max)  || check > today){
+                          alert("Invalid date.");
+                        }else{
+                          alert("Medication date given is not between the range.")
+                        }
+                      }
+                      
+
+                   
+                    }  
+                });
+
+                
             });
          
       });

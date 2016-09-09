@@ -74,6 +74,10 @@
 		echo json_encode($db->getFeedReport($pig,$from,$to)); 
 		/*localhost/phpork2/gateway/meds.php?getMedsDetails=1&med=1*/
 	} 
+	if(isset($_POST['getMaxFeedDate'])){
+		echo json_encode($db->getMaxFeedDate()); 
+		/*localhost/phpork2/gateway/meds.php?getMedsDetails=1&med=1*/
+	} 
 	if(isset($_POST['ddl_feeds'])){
 		$arr_feed = $db->ddl_feeds(); 
 		echo json_encode($arr_feed);

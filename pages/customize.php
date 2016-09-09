@@ -22,147 +22,148 @@
     $feeds2_status = 'unchecked';
     $feeds3_status = 'unchecked';
     $feeds4_status = 'unchecked';
-    $vitasup1_status = 'unchecked';
-    $vitasup2_status = 'unchecked';
-    $vitasup3_status = 'unchecked';
-    $vitasup4_status = 'unchecked';
+    // $vitasup1_status = 'unchecked';
+    // $vitasup2_status = 'unchecked';
+    // $vitasup3_status = 'unchecked';
+    // $vitasup4_status = 'unchecked';
     $medicine1_status = 'unchecked';
     $medicine2_status = 'unchecked';
     $medicine3_status = 'unchecked';
     $medicine4_status = 'unchecked';
-    $water1_status = 'unchecked';
-    $water2_status = 'unchecked';
-    $water3_status = 'unchecked';
-    $water4_status = 'unchecked';
-    $prodinfo1_status = 'unchecked';
-    $prodinfo2_status = 'unchecked';
-    $prodinfo3_status = 'unchecked';
-    $prodinfo4_status = 'unchecked';
-    $people1_status = 'unchecked';
-    $people2_status = 'unchecked';
-    $people3_status = 'unchecked';
-    $people4_status = 'unchecked';
+    // $water1_status = 'unchecked';
+    // $water2_status = 'unchecked';
+    // $water3_status = 'unchecked';
+    // $water4_status = 'unchecked';
+    // $prodinfo1_status = 'unchecked';
+    // $prodinfo2_status = 'unchecked';
+    // $prodinfo3_status = 'unchecked';
+    // $prodinfo4_status = 'unchecked';
+    // $people1_status = 'unchecked';
+    // $people2_status = 'unchecked';
+    // $people3_status = 'unchecked';
+    // $people4_status = 'unchecked';
   
     if(isset($_POST['submit'])) {
-      if($selected_radio = $_POST['parentage']){
-        if($selected_radio == 'parentage_NOT_record') {
-          $parentage1_status = 'checked';
-        } 
-        elseif($selected_radio == 'parentage_save_local') {
-          $parentage2_status = 'checked';
-        }
-        elseif($selected_radio == 'parentage_keep_private') {
-          $parentage3_status = 'checked';
-        }
-        elseif($selected_radio == 'parentage_open_data') {
-          $parentage4_status = 'checked';
-        }
+      $sel_prnt = $_POST['parentage'];
+      
+      if($sel_prnt == 'parentage_NOT_record') {
+        alert("kaka");
+      } 
+      elseif($sel_prnt == 'parentage_save_local') {
+        $parentage2_status = 'checked';
+      }
+      elseif($sel_prnt == 'parentage_keep_private') {
+        $parentage3_status = 'checked';
+      }
+      elseif($sel_prnt == 'parentage_open_data') {
+        $parentage4_status = 'checked';
       }
       
-      if($selected_radio = $_POST['movement']){
-        if($selected_radio == 'movement_NOT_record') {
-          $movement1_status = 'checked';
-        }  
-        elseif($selected_radio == 'movement_save_local') {
-          $movement2_status = 'checked';
-        }
-        elseif($selected_radio == 'movement_keep_private') {
-          $movement3_status = 'checked';
-        }
-        elseif($selected_radio == 'movement_open_data') {
-          $movement4_status = 'checked';
-        }
-      }
-
-      if($selected_radio = $_POST['feeds']){  
-        if($selected_radio == 'feeds_NOT_record') {
-          $feeds1_status = 'checked';
-        } 
-        elseif($selected_radio == 'feeds_save_local') {
-          $feeds2_status = 'checked';
-        }
-        elseif($selected_radio == 'feeds_keep_private') {
-          $feeds3_status = 'checked';
-        }
-        elseif($selected_radio == 'feeds_open_data') {
-          $feeds4_status = 'checked';
-        }
-      }    
-
-      if($selected_radio = $_POST['vitasup']){ 
-        if($selected_radio == 'vitasup_NOT_record') {
-          $vitasup1_status = 'checked';
-        } 
-        elseif($selected_radio == 'vitasup_save_local') {
-          $vitasup2_status = 'checked';
-        }
-        elseif($selected_radio == 'vitasup_keep_private') {
-          $vitasup3_status = 'checked';
-        }
-        elseif($selected_radio == 'vitasup_open_data') {
-          $vitasup4_status = 'checked';
-        }
-      }
-
-      if($selected_radio = $_POST['medicine']){ 
-        if($selected_radio == 'medicine_NOT_record') {
-          $medicine1_status = 'checked';
-        } 
-        elseif($selected_radio == 'medicine_save_local') {
-          $medicine2_status = 'checked';
-        }
-        elseif($selected_radio == 'medicine_keep_private') {
-          $medicine3_status = 'checked';
-        }
-        elseif($selected_radio == 'medicine_open_data') {
-          $medicine4_status = 'checked';
-        }
-      }
-
-      if($selected_radio = $_POST['water']){   
-        if($selected_radio == 'water_NOT_record') {
-          $water1_status = 'checked';
-        } 
-        elseif($selected_radio == 'water_save_local') {
-          $water2_status = 'checked';
-        }
-        elseif($selected_radio == 'water_keep_private') {
-          $water3_status = 'checked';
-        }
-        elseif($selected_radio == 'water_open_data') {
-          $water4_status = 'checked';
-        }
-      }
-
-      if($selected_radio = $_POST['prodinfo']){  
-        if($selected_radio == 'prodinfo_NOT_record') {
-          $prodinfo1_status = 'checked';
-        } 
-        elseif($selected_radio == 'prodinfo_save_local') {
-          $prodinfo2_status = 'checked';
-        }
-        elseif($selected_radio == 'prodinfo_keep_private') {
-          $prodinfo3_status = 'checked';
-        }
-        elseif($selected_radio == 'prodinfo_open_data') {
-          $prodinfo4_status = 'checked';
-        }
-      }  
       
-      if($selected_radio = $_POST['people']){ 
-        if($selected_radio == 'people_NOT_record') {
-          $people1_status = 'checked';
-        } 
-        elseif($selected_radio == 'people_save_local') {
-          $people2_status = 'checked';
-        }
-        elseif($selected_radio == 'people_keep_private') {
-          $people3_status = 'checked';
-        }
-        elseif($selected_radio == 'people_open_data') {
-          $people4_status = 'checked';
-        }
-      }    
+      // if($selected_radio = $_POST['movement']){
+      //   if($selected_radio == 'movement_NOT_record') {
+      //     $movement1_status = 'checked';
+      //   }  
+      //   elseif($selected_radio == 'movement_save_local') {
+      //     $movement2_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'movement_keep_private') {
+      //     $movement3_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'movement_open_data') {
+      //     $movement4_status = 'checked';
+      //   }
+      // }
+
+      // if($selected_radio = $_POST['feeds']){  
+      //   if($selected_radio == 'feeds_NOT_record') {
+      //     $feeds1_status = 'checked';
+      //   } 
+      //   elseif($selected_radio == 'feeds_save_local') {
+      //     $feeds2_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'feeds_keep_private') {
+      //     $feeds3_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'feeds_open_data') {
+      //     $feeds4_status = 'checked';
+      //   }
+      // }    
+
+      // if($selected_radio = $_POST['vitasup']){ 
+      //   if($selected_radio == 'vitasup_NOT_record') {
+      //     $vitasup1_status = 'checked';
+      //   } 
+      //   elseif($selected_radio == 'vitasup_save_local') {
+      //     $vitasup2_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'vitasup_keep_private') {
+      //     $vitasup3_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'vitasup_open_data') {
+      //     $vitasup4_status = 'checked';
+      //   }
+      // }
+
+      // if($selected_radio = $_POST['medicine']){ 
+      //   if($selected_radio == 'medicine_NOT_record') {
+      //     $medicine1_status = 'checked';
+      //   } 
+      //   elseif($selected_radio == 'medicine_save_local') {
+      //     $medicine2_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'medicine_keep_private') {
+      //     $medicine3_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'medicine_open_data') {
+      //     $medicine4_status = 'checked';
+      //   }
+      // }
+
+      // if($selected_radio = $_POST['water']){   
+      //   if($selected_radio == 'water_NOT_record') {
+      //     $water1_status = 'checked';
+      //   } 
+      //   elseif($selected_radio == 'water_save_local') {
+      //     $water2_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'water_keep_private') {
+      //     $water3_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'water_open_data') {
+      //     $water4_status = 'checked';
+      //   }
+      // }
+
+      // if($selected_radio = $_POST['prodinfo']){  
+      //   if($selected_radio == 'prodinfo_NOT_record') {
+      //     $prodinfo1_status = 'checked';
+      //   } 
+      //   elseif($selected_radio == 'prodinfo_save_local') {
+      //     $prodinfo2_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'prodinfo_keep_private') {
+      //     $prodinfo3_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'prodinfo_open_data') {
+      //     $prodinfo4_status = 'checked';
+      //   }
+      // }  
+      
+      // if($selected_radio = $_POST['people']){ 
+      //   if($selected_radio == 'people_NOT_record') {
+      //     $people1_status = 'checked';
+      //   } 
+      //   elseif($selected_radio == 'people_save_local') {
+      //     $people2_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'people_keep_private') {
+      //     $people3_status = 'checked';
+      //   }
+      //   elseif($selected_radio == 'people_open_data') {
+      //     $people4_status = 'checked';
+      //   }
+      // }    
     }
   ?> 
 
@@ -215,47 +216,40 @@
           <tbody>
             <tr>
               <th class="theader" scope="row" name="parentage">Parentage</td>
-              <td><input class="c" id="a1" type="radio" name="radio" value="parentage_NOT_record"></td>
-              <td><input class="c" id="a2" type="radio" name="radio" value="parentage_save_local"></td>
-              <td><input class="c" id="a3" type="radio" name="radio" value="parentage_keep_private"></td>
-              <td><input class="c" id="a4" type="radio" name="radio" value="parentage_open_data"></td>
+              <td><input class="prnt"  type="radio" name="parents" value="parentage_NOT_record"></td>
+              <td><input class="prnt"  type="radio" name="parents" value="parentage_save_local"></td>
+              <td><input class="prnt"  type="radio" name="parents" value="parentage_keep_private"></td>
+              <td><input class="prnt"  type="radio" name="parents" value="parentage_open_data"></td>
             </tr>
-            <tr>
+           <!--  <tr>
               <th class="theader" scope="row" name="movement">Movement</td>
-              <td><input class="c" id="b1" type="radio" name="radio" value="movement_NOT_record"></td>
-              <td><input class="c" id="b2" type="radio" name="radio" value="movement_save_local"></td>
-              <td><input class="c" id="b3" type="radio" name="radio" value="movement_keep_private"></td>
-              <td><input class="c" id="b4" type="radio" name="radio" value="movement_open_data"></td>
+              <td><input class="mvmnt_radio"  type="radio" name="mvmnt" value="movement_NOT_record"></td>
+              <td><input class="mvmnt_radio"  type="radio" name="mvmnt" value="movement_save_local"></td>
+              <td><input class="mvmnt_radio"  type="radio" name="mvmnt" value="movement_keep_private"></td>
+              <td><input class="mvmnt_radio"  type="radio" name="mvmnt" value="movement_open_data"></td>
             </tr>
             <tr>
               <th class="theader" scope="row" name="feeds">Feeds</td>
-              <td><input class="c" id="c1" type="radio" name="radio" value="feeds_NOT_record"></td>
-              <td><input class="c" id="c2" type="radio" name="radio" value="feeds_save_local"></td>
-              <td><input class="c" id="c3" type="radio" name="radio" value="feeds_keep_private"></td>
-              <td><input class="c" id="c4" type="radio" name="radio" value="feeds_open_data"></td>
-            </tr>
-            <tr>
+              <td><input class="feeds_radio"  type="radio" name="feeds" value="feeds_NOT_record"></td>
+              <td><input class="feeds_radio"  type="radio" name="feeds" value="feeds_save_local"></td>
+              <td><input class="feeds_radio"  type="radio" name="feeds" value="feeds_keep_private"></td>
+              <td><input class="feeds_radio"  type="radio" name="feeds" value="feeds_open_data"></td>
+            </tr> -->
+            <!-- <tr>
               <th class="theader" scope="row" name="vitasup">Vitamins and Supplements</td>
-              <td><input class="c" id="d1" type="radio" name="radio" value="vitasup_NOT_record"></td>
-              <td><input class="c" id="d2" type="radio" name="radio" value="vitasup_save_local"></td>
-              <td><input class="c" id="d3" type="radio" name="radio" value="vitasup_keep_private"></td>
-              <td><input class="c" id="d4" type="radio" name="radio" value="vitasup_open_data"></td>
-            </tr>
-            <tr>
+              <td><input class="c" id="d1" type="radio" name="vit" value="vitasup_NOT_record"></td>
+              <td><input class="c" id="d2" type="radio" name="vit" value="vitasup_save_local"></td>
+              <td><input class="c" id="d3" type="radio" name="vit" value="vitasup_keep_private"></td>
+              <td><input class="c" id="d4" type="radio" name="vit" value="vitasup_open_data"></td>
+            </tr> -->
+           <!--  <tr>
               <th class="theader" scope="row" name="medicine">Medicine</td>
-              <td><input class="c" id="e1" type="radio" name="radio" value="medicine_NOT_record"></td>
-              <td><input class="c" id="e2" type="radio" name="radio" value="medicine_save_local"></td>
-              <td><input class="c" id="e3" type="radio" name="radio" value="medicine_keep_private"></td>
-              <td><input class="c" id="e4" type="radio" name="radio" value="medicine_open_data"></td>
-            </tr>
-            <tr>
-              <th class="theader" scope="row" name="water">Water</td>
-              <td><input class="c" id="f1" type="radio" name="radio" value="water_NOT_record"></td>
-              <td><input class="c" id="f2" type="radio" name="radio" value="water_save_local"></td>
-              <td><input class="c" id="f3" type="radio" name="radio" value="water_keep_private"></td>
-              <td><input class="c" id="f4" type="radio" name="radio" value="water_open_data"></td>
-            </tr>
-            <tr>
+              <td><input class="meds_radio"  type="radio" name="meds" value="medicine_NOT_record"></td>
+              <td><input class="meds_radio"  type="radio" name="meds" value="medicine_save_local"></td>
+              <td><input class="meds_radio"  type="radio" name="meds" value="medicine_keep_private"></td>
+              <td><input class="meds_radio"  type="radio" name="meds" value="medicine_open_data"></td>
+            </tr> -->
+            <!-- <tr>
               <th class="theader" scope="row" name="prodinfo">Production Information</td>
               <td><input class="c" id="g1" type="radio" name="radio" value="prodinfo_NOT_record"></td>
               <td><input class="c" id="g2" type="radio" name="radio" value="prodinfo_save_local"></td>
@@ -268,20 +262,28 @@
               <td><input class="c" id="h2" type="radio" name="radio" value="people_save_local"></td>
               <td><input class="c" id="h3" type="radio" name="radio" value="people_keep_private"></td>
               <td><input class="c" id="h4" type="radio" name="radio" value="people_open_data"></td>
-            </tr>
+            </tr> -->
           </tbody>
         </table>
       </div>
     </br>
     <div style="margin-left: 40%">
        <button type="button" class="btn1" id="backH">
-          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> DONE 
+        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> DONE 
       </button>
     </div>
       </div>
 
- <div class="page-footer"> 
+    <div class="page-footer"> 
       Prototype Pork Traceability System || Copyright &copy; 2014 - <?php echo date("Y");?> UPLB || funded by PCAARRD 
     </div>
+     <script type="text/javascript"> 
+       $(document).ready(function () {
+          $('#backH').on("click",function(){
+              var val = $('.prnt').val();
+              
+          });
+       });
+      </script>
   </body>
 </html>

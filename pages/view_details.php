@@ -314,7 +314,7 @@
 									</tr>
 									<tr>
 										<td>
-											Quantity: <input type="number" id="medQty" name="medQty" min="0"  step="0.01" style="color:black;border-radius:5px;height:25px;"/> &nbsp;&nbsp; 
+											Quantity: <input type="number" id="medQty" name="medQty" min="0.01"  step="0.01" style="color:black;border-radius:5px;height:25px;"/> &nbsp;&nbsp; 
 											<select style="color:black;border-radius:5px;" name="selUnit" id="qtyUnit">
 												<option value = "cc"> cc</option>
 												<option value="ml">ml</option>
@@ -466,7 +466,7 @@
 									</tr>
 									
 									<tr>
-										<td>Quantity: <input type="number" id="feedQty" name="feedQty" min="0"  step="0.01" style="color:black;border-radius:5px;height:25px;width:50%"/> &nbsp;&nbsp; <span>kg</span>
+										<td>Quantity: <input type="number" id="feedQty" name="feedQty" min="0.01"  step="0.01" style="color:black;border-radius:5px;height:25px;width:50%"/> &nbsp;&nbsp; <span>kg</span>
 										</td>
 									</tr>
 								</table>
@@ -1031,9 +1031,11 @@
            var user_id = $('#userId').val();
            var pigLabel = $('#pigLabel').val();
            var weightrecord = $('#weightRecordId').val();
-
+            var matchWType = newWeightType.match(/[0-9]+/g);
            if(newWeekFar == "" || newWeightType == "" || newWeight == ""){
            	alert("Please fill up all fields");
+           }else if(matchWType != null){
+           		alert("invalid weight type input!(Letters only)");
            }else{
 
 	           $.ajax({
@@ -1063,7 +1065,6 @@
 				        },
 				        success: function (data) { 
 				           
-				           console.log("pig rfid updated");
 
 
 				            $.ajax({
@@ -1081,7 +1082,6 @@
 						        },
 						        success: function (data) { 
 						           
-						           console.log("pig weight updated");
 
 						            $.ajax({
 								        url: '/phpork/gateway/pig.php',
@@ -1094,8 +1094,7 @@
 								          week_far: newWeekFar
 								        },
 								        success: function (data) { 
-								          
-								           console.log("edit history");
+								          alert("Edited successfully!");
 								           location.reload();
 
 								          
@@ -1347,81 +1346,103 @@
 		 	var medQuantity = $('#medQty').val();
 		 	var qtyUnit = $('#qtyUnit').val();
 		 	var user = $('#userId').val();
-
 		 	var choice = $('#selectMedchoice').val();
+		 	$.ajax({
+                    url: '/phpork/gateway/meds.php',
+                    type: 'post',
+                    data : {
+                      getMaxMedDate: '1'
+                    },
+                    success: function (data) { 
+						var data = jQuery.parseJSON(data);
+						var days = 7; 
+						var to = new Date(data[0].mdate);
+						var from = new Date(to -(days * 24 * 60 * 60 * 1000) );
+						var check = new Date(dateGiven);
+						var today = new Date();
+						var min = new Date("0001-01-01");
+						var max = new Date("2016-01-01");
+                      	if( lastMed == "" || dateGiven == "" || timeGiven == "" || medQuantity == "" || qtyUnit == "" ){
+					 		alert("Please fill up all fields");
+					 	}else {
+					 		if(check >= from && check <= to){
+					 			if(choice === "perpen"){
 
-		 	if( lastMed == "" || dateGiven == "" || timeGiven == "" || medQuantity == "" || qtyUnit == "" ){
-		 		alert("Please fill up all fields");
-		 	}else {
+							 		var checkedPen = document.getElementsByClassName('penclass');
+							 		var selPen = [];
 
-			 	if(choice === "perpen"){
-
-			 		var checkedPen = document.getElementsByClassName('penclass');
-			 		var selPen = [];
-
-			 		for(var i=0;i<checkedPen.length; i++){
-			 			if(checkedPen[i].checked){
-			 				selPen.push($(checkedPen[i]).val());
-			 			}
-			 		}
-			 		
-				 	 $.ajax({
-		                    url: '/phpork/gateway/meds.php',
-		                    type: 'post',
-		                    data : {
-		                     subMed: '1',
-		                     selectMeds: lastMed,
-							 medDate: dateGiven,
-				             medTime: timeGiven, 
-			                 medQty: medQuantity,
-				             selUnit: qtyUnit,
-				             pensel: selPen,
-				             user: user
-		                    },
-		                    success: function (data) { 
-		                       alert("Added!");
-		                       location.reload();
-		                       $('#medication').click();
-		                     }
-		                  });
-
-
-			 	}else if(choice === "perpig"){
-			 		var checkedPig = document.getElementsByClassName('pigclass');
-			 		var selPig = [];
-
-			 		for(var i=0;i<checkedPig.length; i++){
-			 			if(checkedPig[i].checked){
-			 				console.log($(checkedPig[i]).val());
-			 				selPig.push($(checkedPig[i]).val());
-			 			}
-			 		}
-
-
-			 	 $.ajax({
-	                    url: '/phpork/gateway/meds.php',
-	                    type: 'post',
-	                    data : {
-	                     subMed: '1',
-	                     selectMeds: lastMed,
-						 medDate: dateGiven,
-			             medTime: timeGiven, 
-		                 medQty: medQuantity,
-			             selUnit: qtyUnit,
-			             pigpen: selPig,
-			             user: user
-	                    },
-	                    success: function (data) { 
-	                      alert("Added!");
-		                       location.reload();
-		                       $('#medication').click("true");
-	                          
-	                     }
-	                  });
+							 		for(var i=0;i<checkedPen.length; i++){
+							 			if(checkedPen[i].checked){
+							 				selPen.push($(checkedPen[i]).val());
+							 			}
+							 		}
+							 		
+								 	 $.ajax({
+						                    url: '/phpork/gateway/meds.php',
+						                    type: 'post',
+						                    data : {
+						                     subMed: '1',
+						                     selectMeds: lastMed,
+											 medDate: dateGiven,
+								             medTime: timeGiven, 
+							                 medQty: medQuantity,
+								             selUnit: qtyUnit,
+								             pensel: selPen,
+								             user: user
+						                    },
+						                    success: function (data) { 
+						                       alert("Added!");
+						                       location.reload();
+						                       $('#medication').click();
+						                     }
+						                  });
 
 
-			 	}
-			 }
+							 	}else if(choice === "perpig"){
+							 		var checkedPig = document.getElementsByClassName('pigclass');
+							 		var selPig = [];
+
+							 		for(var i=0;i<checkedPig.length; i++){
+							 			if(checkedPig[i].checked){
+							 				console.log($(checkedPig[i]).val());
+							 				selPig.push($(checkedPig[i]).val());
+							 			}
+							 		}
+
+
+							 	 $.ajax({
+					                    url: '/phpork/gateway/meds.php',
+					                    type: 'post',
+					                    data : {
+					                     subMed: '1',
+					                     selectMeds: lastMed,
+										 medDate: dateGiven,
+							             medTime: timeGiven, 
+						                 medQty: medQuantity,
+							             selUnit: qtyUnit,
+							             pigpen: selPig,
+							             user: user
+					                    },
+					                    success: function (data) { 
+					                      alert("Added!");
+						                       location.reload();
+						                       $('#medication').click("true");
+					                          
+					                     }
+					                  });
+
+
+							 	}
+					 		}else if((check >= min && check <= max)  || check > today){
+	                          alert("Invalid date.");
+	                        }else{
+	                          alert("Medication date given is not between the range.")
+	                        }	
+						 	
+						 }
+                    }
+            });
+		 	
 
 
 		 });
@@ -1613,80 +1634,103 @@
 		 	var user = $('#userId').val();
 		 	
 		 	var choice = $('#selectFeedchoice').val();
+		 	$.ajax({
+				url: '/phpork/gateway/feeds.php',
+				type: 'post',
+				data : {
+					getMaxFeedDate: '1'
+				},
+				success: function (data) { 
+					var data = jQuery.parseJSON(data); 
+					var to = new Date(data[0].fdate);
+					var from = new Date(to -(days * 24 * 60 * 60 * 1000) );
+					var check = new Date(dateFeedGiven);
+					var checkprod = new Date(feedProdDate);
+					var min = new Date("0001-01-01");
+					var max = new Date("2016-01-01");
+					var today = new Date();
+					var days = 7;
+					if(lastFeed == "" || feedProdDate == "" || dateFeedGiven == "" || timeFeedGiven == "" || feedQuantity == ""){
+				 		alert("Please fill up all fields");
+				 	}else{
+				 		if(check >= from && check <= to){
+				 			if(choice === "perpenF"){
 
-		 	if(lastFeed == "" || feedProdDate == "" || dateFeedGiven == "" || timeFeedGiven == "" || feedQuantity == ""){
-		 		alert("Please fill up all fields");
-		 	}else{
+						 		var checkedPenF = document.getElementsByClassName('penclassF');
+						 		var selPen = [];
 
-			 	if(choice === "perpenF"){
+						 		for(var i=0;i<checkedPenF.length; i++){
+						 			if(checkedPenF[i].checked){
+						 				selPen.push($(checkedPenF[i]).val());
+						 			}
+						 		}
+						 		
+							 	 $.ajax({
+					                    url: '/phpork/gateway/feeds.php',
+					                    type: 'post',
+					                    data : {
+					                    addFeeds: '1',
+					                    selectFeeds: lastFeed,
+										fdate: dateFeedGiven, 
+										ftime: timeFeedGiven, 
+										feedtypeDate: feedProdDate, 
+										feedQty: feedQuantity,
+										pensel: selPen,
+										user: user
+					                    },
+					                    success: function (data) { 
+					                       
+					                       alert("Added!");
+					                        location.reload();
 
-			 		var checkedPenF = document.getElementsByClassName('penclassF');
-			 		var selPen = [];
-
-			 		for(var i=0;i<checkedPenF.length; i++){
-			 			if(checkedPenF[i].checked){
-			 				selPen.push($(checkedPenF[i]).val());
-			 			}
-			 		}
-			 		
-				 	 $.ajax({
-		                    url: '/phpork/gateway/feeds.php',
-		                    type: 'post',
-		                    data : {
-		                    addFeeds: '1',
-		                    selectFeeds: lastFeed,
-							fdate: dateFeedGiven, 
-							ftime: timeFeedGiven, 
-							feedtypeDate: feedProdDate, 
-							feedQty: feedQuantity,
-							pensel: selPen,
-							user: user
-		                    },
-		                    success: function (data) { 
-		                       
-		                       alert("Added!");
-		                        location.reload();
-
-		                     }
-		                  });
-
-
-			 	}else if(choice === "perpigF"){
-			 		var checkedPigF = document.getElementsByClassName('pigclassF');
-			 		var selPig = [];
-
-			 		for(var i=0;i<checkedPigF.length; i++){
-			 			if(checkedPigF[i].checked){
-			 				console.log($(checkedPigF[i]).val());
-			 				selPig.push($(checkedPigF[i]).val());
-			 			}
-			 		}
-
-
-			 	 $.ajax({
-	                    url: '/phpork/gateway/feeds.php',
-	                    type: 'post',
-	                    data : {
-	                      addFeeds: '1',
-		                  selectFeeds: lastFeed,
-						  fdate: dateFeedGiven, 
-						  ftime: timeFeedGiven,
-						  feedtypeDate: feedProdDate, 
-						  feedQty: feedQuantity,
-						  pigpen: selPig,
-						  user: user
-	                    },
-	                    success: function (data) { 
-	                      alert("Added!"); 
-	                       location.reload();
-
-	                          
-	                     }
-	                  });
+					                     }
+					                  });
 
 
-			 	}
-			 }
+						 	}else if(choice === "perpigF"){
+						 		var checkedPigF = document.getElementsByClassName('pigclassF');
+						 		var selPig = [];
+
+						 		for(var i=0;i<checkedPigF.length; i++){
+						 			if(checkedPigF[i].checked){
+						 				console.log($(checkedPigF[i]).val());
+						 				selPig.push($(checkedPigF[i]).val());
+						 			}
+						 		}
+
+
+							 	$.ajax({
+				                    url: '/phpork/gateway/feeds.php',
+				                    type: 'post',
+				                    data : {
+				                      addFeeds: '1',
+					                  selectFeeds: lastFeed,
+									  fdate: dateFeedGiven, 
+									  ftime: timeFeedGiven,
+									  feedtypeDate: feedProdDate, 
+									  feedQty: feedQuantity,
+									  pigpen: selPig,
+									  user: user
+				                    },
+				                    success: function (data) { 
+				                      alert("Added!"); 
+				                       location.reload();
+
+				                          
+				                    }
+			                  	});
+						 	}
+				 		}else if((check >= min && check <= max)  || check > today || (checkprod >= min && checkprod <= max)  || checkprod > today){
+                        	alert("Invalid date.");
+                        }else{
+                        	alert("Date given is not within the range.");
+                        } /* end if-else check date*/
+					 	
+					}/* end if-else check if empty*/
+				}/* end success function*/
+			});/* end ajax*/
+
+		 	
 
 		 });
 	
@@ -1738,78 +1782,88 @@
 		 	var timeWeighed = $('#timeWeighed').val();
 
 		 	var choice = $('#selectWeightchoice').val();
-		 	var user = $('#userId').val();
-
+		 	var to = new Date();
+			var from = new Date(to -(days * 24 * 60 * 60 * 1000) );
+			var check = new Date(dateWeighed);
+			var min = new Date("0001-01-01");
+			var max = new Date("2016-01-01");
+			var days = 7;
 		 	if(weight == "" || weightType == "" || dateWeighed == "" || timeWeighed == ""){
 		 		alert("Please fill up all fields");
 		 	}else{
+		 		if(check >= from && check <= to){
+		 			if(choice == "perbatch"){
 
-			 	if(choice == "perbatch"){
+				 		var checkedBatch = document.getElementsByClassName('batchclass');
+				 		var selBatch = [];
 
-			 		var checkedBatch = document.getElementsByClassName('batchclass');
-			 		var selBatch = [];
+				 		for(var i=0;i<checkedBatch.length; i++){
+				 			if(checkedBatch[i].checked){
+				 				console.log($(checkedBatch[i]).val());
+				 				selBatch.push($(checkedBatch[i]).val());
+				 			}
+				 		}
+				 		
+					 	 $.ajax({
+			                    url: '/phpork/gateway/pig.php',
+			                    type: 'post',
+			                    data : {
+			                     insertWeight: '1',
+			                     weight: weight,
+								 weightType: weightType,
+					             dateWeighed: dateWeighed, 
+				                 timeWeighed: timeWeighed,
+					             user: user,
+					             batchsel: selBatch
+			                    },
+			                    success: function (data) { 
+			                       alert("Added q!");
+			                        location.reload();
 
-			 		for(var i=0;i<checkedBatch.length; i++){
-			 			if(checkedBatch[i].checked){
-			 				console.log($(checkedBatch[i]).val());
-			 				selBatch.push($(checkedBatch[i]).val());
-			 			}
-			 		}
-			 		
+			                       
+			                     }
+			                  });
+
+
+				 	}else if(choice == "perpigW"){
+				 		var checkedPig = document.getElementsByClassName('pigclassW');
+				 		var selPig = [];
+
+				 		for(var i=0;i<checkedPig.length; i++){
+				 			if(checkedPig[i].checked){
+				 				console.log($(checkedPig[i]).val());
+				 				selPig.push($(checkedPig[i]).val());
+				 			}
+				 		}
+
+
 				 	 $.ajax({
-		                    url: '/phpork/gateway/pig.php',
-		                    type: 'post',
-		                    data : {
-		                     insertWeight: '1',
-		                     weight: weight,
-							 weightType: weightType,
-				             dateWeighed: dateWeighed, 
-			                 timeWeighed: timeWeighed,
-				             user: user,
-				             batchsel: selBatch
-		                    },
-		                    success: function (data) { 
-		                       alert("Added q!");
-		                        location.reload();
+	                    url: '/phpork/gateway/pig.php',
+	                    type: 'post',
+	                    data : {
+	                     insertWeight: '1',
+	                     weight: weight,
+						 weightType: weightType,
+			             dateWeighed: dateWeighed, 
+		                 timeWeighed: timeWeighed,
+			             user: user,
+			             pigsel: selPig
+	                    },
+	                    success: function (data) { 
+	                       alert("Added!");
+	                       location.reload($('#weight').click());
 
-		                       
-		                     }
-		                  });
+	                       
+	                     }
+	                  });
 
-
-			 	}else if(choice == "perpigW"){
-			 		var checkedPig = document.getElementsByClassName('pigclassW');
-			 		var selPig = [];
-
-			 		for(var i=0;i<checkedPig.length; i++){
-			 			if(checkedPig[i].checked){
-			 				console.log($(checkedPig[i]).val());
-			 				selPig.push($(checkedPig[i]).val());
-			 			}
-			 		}
-
-
-			 	 $.ajax({
-		                    url: '/phpork/gateway/pig.php',
-		                    type: 'post',
-		                    data : {
-		                     insertWeight: '1',
-		                     weight: weight,
-							 weightType: weightType,
-				             dateWeighed: dateWeighed, 
-			                 timeWeighed: timeWeighed,
-				             user: user,
-				             pigsel: selPig
-		                    },
-		                    success: function (data) { 
-		                       alert("Added!");
-		                       location.reload($('#weight').click());
-
-		                       
-		                     }
-		                  });
-
-			 	}
+				 	}
+		 		}else if((check >= min && check <= max)  || check > to){
+                	alert("Invalid date.");
+                }else{
+                	alert("Date given is not within the range.");
+                } /* end if-else check date*/
+			 	
 			 }
 
 		 });
